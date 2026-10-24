@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>AgentDiff — login-bug/a vs login-bug/b</title>
+<style>
+:root {
+  --bg:#0d1117; --panel:#161b22; --border:#30363d; --text:#e6edf3; --muted:#8b949e;
+  --a:#58a6ff; --b:#3fb950; --diverge:#f85149; --same:#238636; --accent:#a371f7;
+  --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+}
+* { box-sizing: border-box; }
+html, body { margin:0; padding:0; background:var(--bg); color:var(--text); font:14px/1.45 var(--sans); }
+header {
+  position: sticky; top:0; z-index:20; background:rgba(13,17,23,.92); backdrop-filter: blur(8px);
+  border-bottom:1px solid var(--border); padding:14px 20px 12px;
+}
+header .top { display:flex; flex-wrap:wrap; gap:12px 20px; align-items:center; justify-content:space-between; }
+h1 { margin:0; font-size:18px; font-weight:650; letter-spacing:.2px; }
+h1 span { color:var(--accent); }
+.meta { color:var(--muted); font-size:12px; }
+.stats { display:flex; flex-wrap:wrap; gap:8px; margin-top:10px; }
+.pill {
+  background:var(--panel); border:1px solid var(--border); border-radius:999px;
+  padding:4px 10px; font-size:12px; color:var(--muted);
+}
+.pill b { color:var(--text); font-weight:600; }
+.pill.drift b { color: #ffa657; }
+.pill.div b { color: var(--diverge); }
+.controls { display:flex; flex-wrap:wrap; gap:8px; align-items:center; margin-top:10px; }
+button, .btn {
+  background:#21262d; color:var(--text); border:1px solid var(--border); border-radius:8px;
+  padding:6px 12px; font:12px/1.2 var(--sans); cursor:pointer;
+}
+button:hover { border-color:#8b949e; }
+button.primary { background:#238636; border-color:#2ea043; }
+button:disabled { opacity:.45; cursor:default; }
+#scrub { flex:1; min-width:160px; accent-color:var(--accent); }
+main { padding:16px 20px 48px; max-width:1280px; margin:0 auto; }
+.legend { display:flex; gap:16px; color:var(--muted); font-size:12px; margin-bottom:12px; }
+.legend i { display:inline-block; width:10px; height:10px; border-radius:2px; margin-right:6px; }
+.legend .da { background:rgba(248,81,73,.25); border:1px solid var(--diverge); }
+.legend .sa { background:rgba(35,134,54,.2); border:1px solid var(--same); }
+table { width:100%; border-collapse:separate; border-spacing:0 6px; }
+tr.row td { background:var(--panel); border-top:1px solid var(--border); border-bottom:1px solid var(--border); padding:10px 12px; vertical-align:top; }
+tr.row td:first-child { border-left:1px solid var(--border); border-radius:10px 0 0 10px; }
+tr.row td:last-child { border-right:1px solid var(--border); border-radius:0 10px 10px 0; }
+tr.row.diverge td { background:rgba(248,81,73,.08); box-shadow: inset 3px 0 0 var(--diverge); }
+tr.row.same td { /* quiet */ }
+tr.row.active td { outline:1px solid var(--accent); outline-offset:-1px; }
+td.idx { width:36px; color:var(--muted); font-family:var(--mono); font-size:11px; text-align:center; }
+td.mid { width:140px; text-align:center; font-size:12px; color:var(--muted); }
+td.side { width:calc((100% - 176px) / 2); }
+.heads { display:grid; grid-template-columns:36px 1fr 140px 1fr; gap:0 0; margin-bottom:6px; color:var(--muted); font-size:11px; text-transform:uppercase; letter-spacing:.06em; padding:0 12px; }
+.heads .la { color:var(--a); } .heads .lb { color:var(--b); }
+.chip {
+  display:inline-block; font:11px/1 var(--mono); padding:3px 7px; border-radius:6px;
+  background:color-mix(in srgb, var(--c) 18%, transparent); color:var(--c); border:1px solid color-mix(in srgb, var(--c) 40%, transparent);
+  margin-bottom:4px;
+}
+.chip.fail { color:#ff5370; border-color:#ff5370; background:rgba(255,83,112,.12); }
+.lab { font-family:var(--mono); font-size:12.5px; word-break:break-word; }
+.file { margin-top:3px; font-size:11px; color:var(--muted); font-family:var(--mono); }
+.step.empty { opacity:.35; }
+.badge { display:inline-block; min-width:22px; padding:2px 6px; border-radius:6px; font-weight:700; }
+.badge.diverge { background:rgba(248,81,73,.2); color:var(--diverge); }
+.badge.same { background:rgba(35,134,54,.2); color:#3fb950; }
+.why { margin-top:4px; font-size:11px; color:#ffa657; }
+.cols { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin:16px 0 8px; }
+.card { background:var(--panel); border:1px solid var(--border); border-radius:12px; padding:12px 14px; }
+.card h3 { margin:0 0 8px; font-size:13px; color:var(--muted); font-weight:600; }
+.bar { display:flex; align-items:center; gap:8px; margin:4px 0; font-size:12px; font-family:var(--mono); }
+.bar .n { width:72px; color:var(--muted); }
+.bar .t { flex:1; height:8px; background:#21262d; border-radius:4px; overflow:hidden; }
+.bar .t i { display:block; height:100%; background:var(--accent); }
+.files { font-size:12px; font-family:var(--mono); color:var(--muted); }
+.files b { color:var(--text); }
+footer { margin-top:28px; color:var(--muted); font-size:11px; text-align:center; }
+@media (max-width:800px) {
+  .cols { grid-template-columns:1fr; }
+  td.mid { width:72px; }
+  .heads { display:none; }
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="top">
+    <div>
+      <h1><span>AgentDiff</span> — side-by-side agent replay</h1>
+      <div class="meta">/workspace/agentdiff/examples/login-bug/a.jsonl &nbsp;vs&nbsp; /workspace/agentdiff/examples/login-bug/b.jsonl</div>
+    </div>
+    <div class="meta">claude-code · claude-code · agentdiff 0.1.0</div>
+  </div>
+  <div class="stats">
+    <div class="pill drift">drift <b>69</b>/100</div>
+    <div class="pill div">divergences <b>8</b></div>
+    <div class="pill">aligned <b>2</b>/10</div>
+    <div class="pill">steps <b>7</b> / <b>5</b></div>
+    <div class="pill">errors <b>2</b> / <b>0</b></div>
+    <div class="pill">first ≠ <b>#3</b></div>
+  </div>
+  <div class="controls">
+    <button class="primary" id="btnFirst" type="button">Jump to first divergence</button>
+    <button id="btnPrev" type="button">Prev ≠</button>
+    <button id="btnNext" type="button">Next ≠</button>
+    <label class="meta" for="scrub">scrub</label>
+    <input id="scrub" type="range" min="0" max="9" value="2" />
+    <span class="meta" id="scrubLabel">#3</span>
+  </div>
+</header>
+<main>
+  <div class="cols">
+    <div class="card">
+      <h3>Tool mix — A</h3>
+      <div class="bar"><span class="n">read</span><span class="t"><i style="width:100%;background:#6cb6ff"></i></span><span>2</span></div><div class="bar"><span class="n">edit</span><span class="t"><i style="width:100%;background:#f0c674"></i></span><span>2</span></div><div class="bar"><span class="n">test_fail</span><span class="t"><i style="width:100%;background:#ff5370"></i></span><span>2</span></div><div class="bar"><span class="n">search</span><span class="t"><i style="width:50%;background:#9cdcfe"></i></span><span>1</span></div>
+      <div class="files" style="margin-top:10px">
+        <div><b>Only A</b>: src/middleware.ts</div>
+        <div><b>Shared</b>: src/auth.ts, src</div>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Tool mix — B</h3>
+      <div class="bar"><span class="n">read</span><span class="t"><i style="width:100%;background:#6cb6ff"></i></span><span>2</span></div><div class="bar"><span class="n">search</span><span class="t"><i style="width:50%;background:#9cdcfe"></i></span><span>1</span></div><div class="bar"><span class="n">edit</span><span class="t"><i style="width:50%;background:#f0c674"></i></span><span>1</span></div><div class="bar"><span class="n">test_pass</span><span class="t"><i style="width:50%;background:#7fd962"></i></span><span>1</span></div>
+      <div class="files" style="margin-top:10px">
+        <div><b>Only B</b>: —</div>
+        <div><b>Titles</b>: Fix login redirect loop · Fix login redirect loop</div>
+      </div>
+    </div>
+  </div>
+  <div class="legend"><span><i class="da"></i>divergence</span><span><i class="sa"></i>aligned</span></div>
+  <div class="heads"><div>#</div><div class="la">A — login-bug/a</div><div></div><div class="lb">B — login-bug/b</div></div>
+  <table><tbody>
+<tr class="row same" data-i="0" id="row-0">
+        <td class="idx">1</td>
+        <td class="side a"><div class="step">
+    <span class="chip" style="--c:#6cb6ff">read</span>
+    <div class="lab">read src/auth.ts</div>
+    <div class="file">src/auth.ts</div>
+  </div></td>
+        <td class="mid"><span class="badge same">=</span></td>
+        <td class="side b"><div class="step">
+    <span class="chip" style="--c:#6cb6ff">read</span>
+    <div class="lab">read src/auth.ts</div>
+    <div class="file">src/auth.ts</div>
+  </div></td>
+      </tr>
+<tr class="row same" data-i="1" id="row-1">
+        <td class="idx">2</td>
+        <td class="side a"><div class="step">
+    <span class="chip" style="--c:#9cdcfe">search</span>
+    <div class="lab">grep redirect</div>
+    <div class="file">src</div>
+  </div></td>
+        <td class="mid"><span class="badge same">=</span></td>
+        <td class="side b"><div class="step">
+    <span class="chip" style="--c:#9cdcfe">search</span>
+    <div class="lab">grep redirect</div>
+    <div class="file">src</div>
+  </div></td>
+      </tr>
+<tr class="row diverge" data-i="2" id="row-2">
+        <td class="idx">3</td>
+        <td class="side a"><div class="step">
+    <span class="chip" style="--c:#6cb6ff">read</span>
+    <div class="lab">read src/middleware.ts</div>
+    <div class="file">src/middleware.ts</div>
+  </div></td>
+        <td class="mid"><span class="badge diverge">≠</span><div class="why">Only A: read src/middleware.ts</div></td>
+        <td class="side b"><div class="step empty"><span class="ghost">—</span></div></td>
+      </tr>
+<tr class="row diverge" data-i="3" id="row-3">
+        <td class="idx">4</td>
+        <td class="side a"><div class="step">
+    <span class="chip" style="--c:#f0c674">edit</span>
+    <div class="lab">edit src/middleware.ts</div>
+    <div class="file">src/middleware.ts</div>
+  </div></td>
+        <td class="mid"><span class="badge diverge">≠</span><div class="why">Only A: edit src/middleware.ts</div></td>
+        <td class="side b"><div class="step empty"><span class="ghost">—</span></div></td>
+      </tr>
+<tr class="row diverge" data-i="4" id="row-4">
+        <td class="idx">5</td>
+        <td class="side a"><div class="step failed">
+    <span class="chip fail" style="--c:#ff5370">test_fail</span>
+    <div class="lab">$ npm test -- auth</div>
+    
+  </div></td>
+        <td class="mid"><span class="badge diverge">≠</span><div class="why">Only A: test_fail</div></td>
+        <td class="side b"><div class="step empty"><span class="ghost">—</span></div></td>
+      </tr>
+<tr class="row diverge" data-i="5" id="row-5">
+        <td class="idx">6</td>
+        <td class="side a"><div class="step">
+    <span class="chip" style="--c:#f0c674">edit</span>
+    <div class="lab">edit src/middleware.ts</div>
+    <div class="file">src/middleware.ts</div>
+  </div></td>
+        <td class="mid"><span class="badge diverge">≠</span><div class="why">Only A: edit src/middleware.ts</div></td>
+        <td class="side b"><div class="step empty"><span class="ghost">—</span></div></td>
+      </tr>
+<tr class="row diverge" data-i="6" id="row-6">
+        <td class="idx">7</td>
+        <td class="side a"><div class="step failed">
+    <span class="chip fail" style="--c:#ff5370">test_fail</span>
+    <div class="lab">$ npm test -- auth</div>
+    
+  </div></td>
+        <td class="mid"><span class="badge diverge">≠</span><div class="why">Only A: test_fail</div></td>
+        <td class="side b"><div class="step empty"><span class="ghost">—</span></div></td>
+      </tr>
+<tr class="row diverge" data-i="7" id="row-7">
+        <td class="idx">8</td>
+        <td class="side a"><div class="step empty"><span class="ghost">—</span></div></td>
+        <td class="mid"><span class="badge diverge">≠</span><div class="why">Only B: read src/auth.ts</div></td>
+        <td class="side b"><div class="step">
+    <span class="chip" style="--c:#6cb6ff">read</span>
+    <div class="lab">read src/auth.ts</div>
+    <div class="file">src/auth.ts</div>
+  </div></td>
+      </tr>
+<tr class="row diverge" data-i="8" id="row-8">
+        <td class="idx">9</td>
+        <td class="side a"><div class="step empty"><span class="ghost">—</span></div></td>
+        <td class="mid"><span class="badge diverge">≠</span><div class="why">Only B: edit src/auth.ts</div></td>
+        <td class="side b"><div class="step">
+    <span class="chip" style="--c:#f0c674">edit</span>
+    <div class="lab">edit src/auth.ts</div>
+    <div class="file">src/auth.ts</div>
+  </div></td>
+      </tr>
+<tr class="row diverge" data-i="9" id="row-9">
+        <td class="idx">10</td>
+        <td class="side a"><div class="step empty"><span class="ghost">—</span></div></td>
+        <td class="mid"><span class="badge diverge">≠</span><div class="why">Only B: test_pass</div></td>
+        <td class="side b"><div class="step">
+    <span class="chip" style="--c:#7fd962">test_pass</span>
+    <div class="lab">$ npm test -- auth</div>
+    
+  </div></td>
+      </tr>
+  </tbody></table>
+  <footer>Generated offline by AgentDiff. Nothing uploaded. 2026-10-24T04:22:47.087Z</footer>
+</main>
+<script id="data" type="application/json">{"labelA":"login-bug/a","labelB":"login-bug/b","agentA":"claude-code","agentB":"claude-code","titleA":"Fix login redirect loop","titleB":"Fix login redirect loop","firstDivergence":2,"drift":69,"stats":{"stepsA":7,"stepsB":5,"aligned":10,"same":2,"diverge":8,"errorsA":2,"errorsB":0,"filesOnlyA":["src/middleware.ts"],"filesOnlyB":[],"filesShared":["src/auth.ts","src"]},"reasons":[{"index":2,"code":"only_a","detail":"Only A: read src/middleware.ts"},{"index":3,"code":"only_a","detail":"Only A: edit src/middleware.ts"},{"index":4,"code":"only_a","detail":"Only A: test_fail"},{"index":5,"code":"only_a","detail":"Only A: edit src/middleware.ts"},{"index":6,"code":"only_a","detail":"Only A: test_fail"},{"index":7,"code":"only_b","detail":"Only B: read src/auth.ts"},{"index":8,"code":"only_b","detail":"Only B: edit src/auth.ts"},{"index":9,"code":"only_b","detail":"Only B: test_pass"}],"rows":[{"index":0,"status":"same","reason":null,"a":{"kind":"read","file":"src/auth.ts","label":"read src/auth.ts","failed":false,"tokens":30,"eventIndex":2},"b":{"kind":"read","file":"src/auth.ts","label":"read src/auth.ts","failed":false,"tokens":30,"eventIndex":2}},{"index":1,"status":"same","reason":null,"a":{"kind":"search","file":"src","label":"grep redirect","failed":false,"tokens":60,"eventIndex":3},"b":{"kind":"search","file":"src","label":"grep redirect","failed":false,"tokens":60,"eventIndex":3}},{"index":2,"status":"diverge","reason":{"code":"only_a","detail":"Only A: read src/middleware.ts"},"a":{"kind":"read","file":"src/middleware.ts","label":"read src/middleware.ts","failed":false,"tokens":90,"eventIndex":4},"b":null},{"index":3,"status":"diverge","reason":{"code":"only_a","detail":"Only A: edit src/middleware.ts"},"a":{"kind":"edit","file":"src/middleware.ts","label":"edit src/middleware.ts","failed":false,"tokens":120,"eventIndex":5},"b":null},{"index":4,"status":"diverge","reason":{"code":"only_a","detail":"Only A: test_fail"},"a":{"kind":"test_fail","label":"$ npm test -- auth","failed":false,"tokens":150,"eventIndex":6},"b":null},{"index":5,"status":"diverge","reason":{"code":"only_a","detail":"Only A: edit src/middleware.ts"},"a":{"kind":"edit","file":"src/middleware.ts","label":"edit src/middleware.ts","failed":false,"tokens":180,"eventIndex":7},"b":null},{"index":6,"status":"diverge","reason":{"code":"only_a","detail":"Only A: test_fail"},"a":{"kind":"test_fail","label":"$ npm test -- auth","failed":false,"tokens":210,"eventIndex":8},"b":null},{"index":7,"status":"diverge","reason":{"code":"only_b","detail":"Only B: read src/auth.ts"},"a":null,"b":{"kind":"read","file":"src/auth.ts","label":"read src/auth.ts","failed":false,"tokens":90,"eventIndex":4}},{"index":8,"status":"diverge","reason":{"code":"only_b","detail":"Only B: edit src/auth.ts"},"a":null,"b":{"kind":"edit","file":"src/auth.ts","label":"edit src/auth.ts","failed":false,"tokens":120,"eventIndex":5}},{"index":9,"status":"diverge","reason":{"code":"only_b","detail":"Only B: test_pass"},"a":null,"b":{"kind":"test_pass","label":"$ npm test -- auth","failed":false,"tokens":150,"eventIndex":6}}],"eventsA":[{"kind":"prompt","label":"you: Fix login redirect loop","tokens":0,"eventIndex":0},{"kind":"think","label":"Looking at auth flow.","tokens":30,"eventIndex":1},{"kind":"read","file":"src/auth.ts","label":"read src/auth.ts","tokens":30,"eventIndex":2},{"kind":"search","file":"src","label":"grep redirect","tokens":60,"eventIndex":3},{"kind":"read","file":"src/middleware.ts","label":"read src/middleware.ts","tokens":90,"eventIndex":4},{"kind":"edit","file":"src/middleware.ts","label":"edit src/middleware.ts","tokens":120,"eventIndex":5},{"kind":"test_fail","label":"$ npm test -- auth","tokens":150,"eventIndex":6},{"kind":"edit","file":"src/middleware.ts","label":"edit src/middleware.ts","tokens":180,"eventIndex":7},{"kind":"test_fail","label":"$ npm test -- auth","tokens":210,"eventIndex":8},{"kind":"done","label":"Session complete","tokens":210,"eventIndex":9}],"eventsB":[{"kind":"prompt","label":"you: Fix login redirect loop","tokens":0,"eventIndex":0},{"kind":"think","label":"Looking at auth flow.","tokens":30,"eventIndex":1},{"kind":"read","file":"src/auth.ts","label":"read src/auth.ts","tokens":30,"eventIndex":2},{"kind":"search","file":"src","label":"grep redirect","tokens":60,"eventIndex":3},{"kind":"read","file":"src/auth.ts","label":"read src/auth.ts","tokens":90,"eventIndex":4},{"kind":"edit","file":"src/auth.ts","label":"edit src/auth.ts","tokens":120,"eventIndex":5},{"kind":"test_pass","label":"$ npm test -- auth","tokens":150,"eventIndex":6},{"kind":"done","label":"Session complete","tokens":150,"eventIndex":7}],"meta":{"generatedAt":"2026-10-24T04:22:47.087Z","sourceA":"/workspace/agentdiff/examples/login-bug/a.jsonl","sourceB":"/workspace/agentdiff/examples/login-bug/b.jsonl","tool":"agentdiff 0.1.0"}}</script>
+<script>
+(function () {
+  const data = JSON.parse(document.getElementById("data").textContent);
+  const rows = [...document.querySelectorAll("tr.row")];
+  const diverges = rows.filter(r => r.classList.contains("diverge"));
+  const scrub = document.getElementById("scrub");
+  const label = document.getElementById("scrubLabel");
+  let cur = data.firstDivergence >= 0 ? data.firstDivergence : 0;
+
+  function activate(i) {
+    cur = Math.max(0, Math.min(rows.length - 1, i));
+    rows.forEach(r => r.classList.remove("active"));
+    const el = document.getElementById("row-" + cur);
+    if (el) {
+      el.classList.add("active");
+      el.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+    scrub.value = String(cur);
+    label.textContent = "#" + (cur + 1);
+  }
+
+  function jumpDiv(dir) {
+    if (!diverges.length) return;
+    const idxs = diverges.map(r => +r.dataset.i);
+    let next;
+    if (dir > 0) next = idxs.find(i => i > cur);
+    else {
+      for (let k = idxs.length - 1; k >= 0; k--) if (idxs[k] < cur) { next = idxs[k]; break; }
+    }
+    if (next === undefined) next = dir > 0 ? idxs[0] : idxs[idxs.length - 1];
+    activate(next);
+  }
+
+  document.getElementById("btnFirst").onclick = () => activate(data.firstDivergence >= 0 ? data.firstDivergence : 0);
+  document.getElementById("btnPrev").onclick = () => jumpDiv(-1);
+  document.getElementById("btnNext").onclick = () => jumpDiv(1);
+  scrub.oninput = () => activate(+scrub.value);
+  rows.forEach(r => r.addEventListener("click", () => activate(+r.dataset.i)));
+  activate(cur);
+})();
+</script>
+</body>
+</html>

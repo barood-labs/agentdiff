@@ -1,0 +1,5 @@
+AgentDiff includes session parsers adapted from:
+  @barood-labs/agenttown — https://github.com/barood-labs/agenttown (MIT)
+
+Divergence / “why it failed” framing inspired by:
+  @barood-labs/whydiff — https://github.com/barood-labs/whydiff (MIT)

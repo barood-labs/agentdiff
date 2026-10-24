@@ -1,0 +1,45 @@
+{
+  "name": "@barood-labs/agentdiff",
+  "version": "0.1.0",
+  "description": "Compare two AI coding-agent sessions side by side. Dual timeline, first-divergence jump, offline single-file HTML report.",
+  "type": "module",
+  "bin": {
+    "agentdiff": "cli/agentdiff.mjs"
+  },
+  "main": "src/index.mjs",
+  "exports": {
+    ".": "./src/index.mjs"
+  },
+  "files": [
+    "cli",
+    "src",
+    "examples",
+    "LICENSE",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "node scripts/build-demo.mjs",
+    "test": "node --test test/*.test.mjs",
+    "demo": "node cli/agentdiff.mjs compare examples/login-bug/a.jsonl examples/login-bug/b.jsonl --out /tmp/agentdiff-demo.html"
+  },
+  "keywords": [
+    "claude-code",
+    "codex",
+    "ai-agent",
+    "diff",
+    "replay",
+    "session",
+    "debug",
+    "cli",
+    "visualization"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/barood-labs/agentdiff.git"
+  },
+  "homepage": "https://github.com/barood-labs/agentdiff",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18"
+  }
+}

@@ -1,0 +1,8 @@
+node_modules/
+*.html
+!docs/*.html
+!examples/**/*.html
+.DS_Store
+*.log
+.tmp/
+coverage/
