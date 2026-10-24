@@ -1,6 +1,6 @@
 {
   "name": "@barood-labs/agentdiff",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Compare two AI coding-agent sessions side by side. Dual timeline, first-divergence jump, offline single-file HTML report.",
   "type": "module",
   "bin": {

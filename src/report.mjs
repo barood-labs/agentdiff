@@ -52,7 +52,7 @@ export function renderReport(diff, meta = {}) {
       generatedAt: meta.generatedAt || new Date().toISOString(),
       sourceA: meta.sourceA || "",
       sourceB: meta.sourceB || "",
-      tool: "agentdiff 0.1.0",
+      tool: "agentdiff 0.1.1",
     },
   };
   const json = JSON.stringify(data).replace(/</g, "\\u003c");
@@ -183,6 +183,7 @@ footer { margin-top:28px; color:var(--muted); font-size:11px; text-align:center;
     <button class="primary" id="btnFirst" type="button">Jump to first divergence</button>
     <button id="btnPrev" type="button">Prev ≠</button>
     <button id="btnNext" type="button">Next ≠</button>
+    <span class="meta">keys: j/k ≠ · ←/→ step · f first</span>
     <label class="meta" for="scrub">scrub</label>
     <input id="scrub" type="range" min="0" max="${Math.max(0, data.rows.length - 1)}" value="${first}" />
     <span class="meta" id="scrubLabel">#${first + 1}</span>
@@ -253,6 +254,15 @@ ${rowsHtml}
   document.getElementById("btnNext").onclick = () => jumpDiv(1);
   scrub.oninput = () => activate(+scrub.value);
   rows.forEach(r => r.addEventListener("click", () => activate(+r.dataset.i)));
+  document.addEventListener("keydown", (e) => {
+    const tag = (e.target && e.target.tagName) || "";
+    if (tag === "INPUT" || tag === "TEXTAREA") return;
+    if (e.key === "ArrowDown" || e.key === "j" || e.key === "J") { e.preventDefault(); jumpDiv(1); }
+    else if (e.key === "ArrowUp" || e.key === "k" || e.key === "K") { e.preventDefault(); jumpDiv(-1); }
+    else if (e.key === "f" || e.key === "F" || e.key === "Enter") { e.preventDefault(); activate(data.firstDivergence >= 0 ? data.firstDivergence : 0); }
+    else if (e.key === "ArrowRight" || e.key === "l" || e.key === "L") { e.preventDefault(); activate(cur + 1); }
+    else if (e.key === "ArrowLeft" || e.key === "h" || e.key === "H") { e.preventDefault(); activate(cur - 1); }
+  });
   activate(cur);
 })();
 </script>
