@@ -59,6 +59,19 @@ export function alignSteps(left, right) {
       else dp[i][j] = Math.max(dp[i + 1][j], dp[i][j + 1]);
     }
   }
+  function appearsLater(arr, start, key) {
+    for (let k = start; k < arr.length; k++) if (stepKey(arr[k]) === key) return true;
+    return false;
+  }
+
+  function sameFamily(a, b) {
+    if (!a || !b) return false;
+    if (a.kind === b.kind) return true;
+    const ta = a.kind === "test_pass" || a.kind === "test_fail";
+    const tb = b.kind === "test_pass" || b.kind === "test_fail";
+    return ta && tb;
+  }
+
   /** @type {{li:number,ri:number,match:boolean}[]} */
   const pairs = [];
   let i = 0,
@@ -68,6 +81,21 @@ export function alignSteps(left, right) {
       pairs.push({ li: i, ri: j, match: true });
       i++;
       j++;
+      continue;
+    }
+    const leftLater = appearsLater(right, j + 1, stepKey(left[i]));
+    const rightLater = appearsLater(left, i + 1, stepKey(right[j]));
+    // Concurrent mismatch: neither key reappears, or same tool family (edit≠edit, test_fail≠test_pass).
+    if ((!leftLater && !rightLater) || sameFamily(left[i], right[j])) {
+      pairs.push({ li: i, ri: j, match: false });
+      i++;
+      j++;
+    } else if (leftLater && !rightLater) {
+      pairs.push({ li: -1, ri: j, match: false });
+      j++;
+    } else if (!leftLater && rightLater) {
+      pairs.push({ li: i, ri: -1, match: false });
+      i++;
     } else if (dp[i + 1][j] >= dp[i][j + 1]) {
       pairs.push({ li: i, ri: -1, match: false });
       i++;

@@ -96,8 +96,8 @@ footer { margin-top:28px; color:var(--muted); font-size:11px; text-align:center;
   </div>
   <div class="stats">
     <div class="pill drift">drift <b>84</b>/100</div>
-    <div class="pill div">divergences <b>7</b></div>
-    <div class="pill">aligned <b>0</b>/7</div>
+    <div class="pill div">divergences <b>4</b></div>
+    <div class="pill">aligned <b>0</b>/4</div>
     <div class="pill">steps <b>3</b> / <b>4</b></div>
     <div class="pill">errors <b>1</b> / <b>0</b></div>
     <div class="pill">first ≠ <b>#1</b></div>
@@ -107,7 +107,7 @@ footer { margin-top:28px; color:var(--muted); font-size:11px; text-align:center;
     <button id="btnPrev" type="button">Prev ≠</button>
     <button id="btnNext" type="button">Next ≠</button>
     <label class="meta" for="scrub">scrub</label>
-    <input id="scrub" type="range" min="0" max="6" value="0" />
+    <input id="scrub" type="range" min="0" max="3" value="0" />
     <span class="meta" id="scrubLabel">#1</span>
   </div>
 </header>
@@ -140,8 +140,12 @@ footer { margin-top:28px; color:var(--muted); font-size:11px; text-align:center;
     <div class="lab">read README.md</div>
     <div class="file">README.md</div>
   </div></td>
-        <td class="mid"><span class="badge diverge">≠</span><div class="why">Only A: read README.md</div></td>
-        <td class="side b"><div class="step empty"><span class="ghost">—</span></div></td>
+        <td class="mid"><span class="badge diverge">≠</span><div class="why">Kind read ≠ search</div></td>
+        <td class="side b"><div class="step">
+    <span class="chip" style="--c:#9cdcfe">search</span>
+    <div class="lab">grep JSON.parse</div>
+    <div class="file">src</div>
+  </div></td>
       </tr>
 <tr class="row diverge" data-i="1" id="row-1">
         <td class="idx">2</td>
@@ -150,8 +154,12 @@ footer { margin-top:28px; color:var(--muted); font-size:11px; text-align:center;
     <div class="lab">edit README.md</div>
     <div class="file">README.md</div>
   </div></td>
-        <td class="mid"><span class="badge diverge">≠</span><div class="why">Only A: edit README.md</div></td>
-        <td class="side b"><div class="step empty"><span class="ghost">—</span></div></td>
+        <td class="mid"><span class="badge diverge">≠</span><div class="why">Kind edit ≠ read</div></td>
+        <td class="side b"><div class="step">
+    <span class="chip" style="--c:#6cb6ff">read</span>
+    <div class="lab">read src/parse.ts</div>
+    <div class="file">src/parse.ts</div>
+  </div></td>
       </tr>
 <tr class="row diverge" data-i="2" id="row-2">
         <td class="idx">3</td>
@@ -160,41 +168,15 @@ footer { margin-top:28px; color:var(--muted); font-size:11px; text-align:center;
     <div class="lab">$ npm test</div>
     
   </div></td>
-        <td class="mid"><span class="badge diverge">≠</span><div class="why">Only A: test_fail</div></td>
-        <td class="side b"><div class="step empty"><span class="ghost">—</span></div></td>
-      </tr>
-<tr class="row diverge" data-i="3" id="row-3">
-        <td class="idx">4</td>
-        <td class="side a"><div class="step empty"><span class="ghost">—</span></div></td>
-        <td class="mid"><span class="badge diverge">≠</span><div class="why">Only B: search src</div></td>
-        <td class="side b"><div class="step">
-    <span class="chip" style="--c:#9cdcfe">search</span>
-    <div class="lab">grep JSON.parse</div>
-    <div class="file">src</div>
-  </div></td>
-      </tr>
-<tr class="row diverge" data-i="4" id="row-4">
-        <td class="idx">5</td>
-        <td class="side a"><div class="step empty"><span class="ghost">—</span></div></td>
-        <td class="mid"><span class="badge diverge">≠</span><div class="why">Only B: read src/parse.ts</div></td>
-        <td class="side b"><div class="step">
-    <span class="chip" style="--c:#6cb6ff">read</span>
-    <div class="lab">read src/parse.ts</div>
-    <div class="file">src/parse.ts</div>
-  </div></td>
-      </tr>
-<tr class="row diverge" data-i="5" id="row-5">
-        <td class="idx">6</td>
-        <td class="side a"><div class="step empty"><span class="ghost">—</span></div></td>
-        <td class="mid"><span class="badge diverge">≠</span><div class="why">Only B: edit src/parse.ts</div></td>
+        <td class="mid"><span class="badge diverge">≠</span><div class="why">Kind test_fail ≠ edit</div></td>
         <td class="side b"><div class="step">
     <span class="chip" style="--c:#f0c674">edit</span>
     <div class="lab">edit src/parse.ts</div>
     <div class="file">src/parse.ts</div>
   </div></td>
       </tr>
-<tr class="row diverge" data-i="6" id="row-6">
-        <td class="idx">7</td>
+<tr class="row diverge" data-i="3" id="row-3">
+        <td class="idx">4</td>
         <td class="side a"><div class="step empty"><span class="ghost">—</span></div></td>
         <td class="mid"><span class="badge diverge">≠</span><div class="why">Only B: test_pass</div></td>
         <td class="side b"><div class="step">
@@ -204,9 +186,9 @@ footer { margin-top:28px; color:var(--muted); font-size:11px; text-align:center;
   </div></td>
       </tr>
   </tbody></table>
-  <footer>Generated offline by AgentDiff. Nothing uploaded. 2026-10-24T04:22:47.094Z</footer>
+  <footer>Generated offline by AgentDiff. Nothing uploaded. 2026-10-24T04:24:03.085Z</footer>
 </main>
-<script id="data" type="application/json">{"labelA":"wrong-file/a","labelB":"wrong-file/b","agentA":"claude-code","agentB":"claude-code","titleA":"Fix JSON parse error on empty input","titleB":"Fix JSON parse error on empty input","firstDivergence":0,"drift":84,"stats":{"stepsA":3,"stepsB":4,"aligned":7,"same":0,"diverge":7,"errorsA":1,"errorsB":0,"filesOnlyA":["README.md"],"filesOnlyB":["src","src/parse.ts"],"filesShared":[]},"reasons":[{"index":0,"code":"only_a","detail":"Only A: read README.md"},{"index":1,"code":"only_a","detail":"Only A: edit README.md"},{"index":2,"code":"only_a","detail":"Only A: test_fail"},{"index":3,"code":"only_b","detail":"Only B: search src"},{"index":4,"code":"only_b","detail":"Only B: read src/parse.ts"},{"index":5,"code":"only_b","detail":"Only B: edit src/parse.ts"},{"index":6,"code":"only_b","detail":"Only B: test_pass"}],"rows":[{"index":0,"status":"diverge","reason":{"code":"only_a","detail":"Only A: read README.md"},"a":{"kind":"read","file":"README.md","label":"read README.md","failed":false,"tokens":30,"eventIndex":1},"b":null},{"index":1,"status":"diverge","reason":{"code":"only_a","detail":"Only A: edit README.md"},"a":{"kind":"edit","file":"README.md","label":"edit README.md","failed":false,"tokens":60,"eventIndex":2},"b":null},{"index":2,"status":"diverge","reason":{"code":"only_a","detail":"Only A: test_fail"},"a":{"kind":"test_fail","label":"$ npm test","failed":false,"tokens":90,"eventIndex":3},"b":null},{"index":3,"status":"diverge","reason":{"code":"only_b","detail":"Only B: search src"},"a":null,"b":{"kind":"search","file":"src","label":"grep JSON.parse","failed":false,"tokens":30,"eventIndex":1}},{"index":4,"status":"diverge","reason":{"code":"only_b","detail":"Only B: read src/parse.ts"},"a":null,"b":{"kind":"read","file":"src/parse.ts","label":"read src/parse.ts","failed":false,"tokens":60,"eventIndex":2}},{"index":5,"status":"diverge","reason":{"code":"only_b","detail":"Only B: edit src/parse.ts"},"a":null,"b":{"kind":"edit","file":"src/parse.ts","label":"edit src/parse.ts","failed":false,"tokens":90,"eventIndex":3}},{"index":6,"status":"diverge","reason":{"code":"only_b","detail":"Only B: test_pass"},"a":null,"b":{"kind":"test_pass","label":"$ npm test","failed":false,"tokens":120,"eventIndex":4}}],"eventsA":[{"kind":"prompt","label":"you: Fix JSON parse error on empty input","tokens":0,"eventIndex":0},{"kind":"read","file":"README.md","label":"read README.md","tokens":30,"eventIndex":1},{"kind":"edit","file":"README.md","label":"edit README.md","tokens":60,"eventIndex":2},{"kind":"test_fail","label":"$ npm test","tokens":90,"eventIndex":3},{"kind":"done","label":"Session complete","tokens":90,"eventIndex":4}],"eventsB":[{"kind":"prompt","label":"you: Fix JSON parse error on empty input","tokens":0,"eventIndex":0},{"kind":"search","file":"src","label":"grep JSON.parse","tokens":30,"eventIndex":1},{"kind":"read","file":"src/parse.ts","label":"read src/parse.ts","tokens":60,"eventIndex":2},{"kind":"edit","file":"src/parse.ts","label":"edit src/parse.ts","tokens":90,"eventIndex":3},{"kind":"test_pass","label":"$ npm test","tokens":120,"eventIndex":4},{"kind":"done","label":"Session complete","tokens":120,"eventIndex":5}],"meta":{"generatedAt":"2026-10-24T04:22:47.094Z","sourceA":"/workspace/agentdiff/examples/wrong-file/a.jsonl","sourceB":"/workspace/agentdiff/examples/wrong-file/b.jsonl","tool":"agentdiff 0.1.0"}}</script>
+<script id="data" type="application/json">{"labelA":"wrong-file/a","labelB":"wrong-file/b","agentA":"claude-code","agentB":"claude-code","titleA":"Fix JSON parse error on empty input","titleB":"Fix JSON parse error on empty input","firstDivergence":0,"drift":84,"stats":{"stepsA":3,"stepsB":4,"aligned":4,"same":0,"diverge":4,"errorsA":1,"errorsB":0,"filesOnlyA":["README.md"],"filesOnlyB":["src","src/parse.ts"],"filesShared":[]},"reasons":[{"index":0,"code":"kind","detail":"Kind read ≠ search"},{"index":1,"code":"kind","detail":"Kind edit ≠ read"},{"index":2,"code":"kind","detail":"Kind test_fail ≠ edit"},{"index":3,"code":"only_b","detail":"Only B: test_pass"}],"rows":[{"index":0,"status":"diverge","reason":{"code":"kind","detail":"Kind read ≠ search"},"a":{"kind":"read","file":"README.md","label":"read README.md","failed":false,"tokens":30,"eventIndex":1},"b":{"kind":"search","file":"src","label":"grep JSON.parse","failed":false,"tokens":30,"eventIndex":1}},{"index":1,"status":"diverge","reason":{"code":"kind","detail":"Kind edit ≠ read"},"a":{"kind":"edit","file":"README.md","label":"edit README.md","failed":false,"tokens":60,"eventIndex":2},"b":{"kind":"read","file":"src/parse.ts","label":"read src/parse.ts","failed":false,"tokens":60,"eventIndex":2}},{"index":2,"status":"diverge","reason":{"code":"kind","detail":"Kind test_fail ≠ edit"},"a":{"kind":"test_fail","label":"$ npm test","failed":false,"tokens":90,"eventIndex":3},"b":{"kind":"edit","file":"src/parse.ts","label":"edit src/parse.ts","failed":false,"tokens":90,"eventIndex":3}},{"index":3,"status":"diverge","reason":{"code":"only_b","detail":"Only B: test_pass"},"a":null,"b":{"kind":"test_pass","label":"$ npm test","failed":false,"tokens":120,"eventIndex":4}}],"eventsA":[{"kind":"prompt","label":"you: Fix JSON parse error on empty input","tokens":0,"eventIndex":0},{"kind":"read","file":"README.md","label":"read README.md","tokens":30,"eventIndex":1},{"kind":"edit","file":"README.md","label":"edit README.md","tokens":60,"eventIndex":2},{"kind":"test_fail","label":"$ npm test","tokens":90,"eventIndex":3},{"kind":"done","label":"Session complete","tokens":90,"eventIndex":4}],"eventsB":[{"kind":"prompt","label":"you: Fix JSON parse error on empty input","tokens":0,"eventIndex":0},{"kind":"search","file":"src","label":"grep JSON.parse","tokens":30,"eventIndex":1},{"kind":"read","file":"src/parse.ts","label":"read src/parse.ts","tokens":60,"eventIndex":2},{"kind":"edit","file":"src/parse.ts","label":"edit src/parse.ts","tokens":90,"eventIndex":3},{"kind":"test_pass","label":"$ npm test","tokens":120,"eventIndex":4},{"kind":"done","label":"Session complete","tokens":120,"eventIndex":5}],"meta":{"generatedAt":"2026-10-24T04:24:03.085Z","sourceA":"/workspace/agentdiff/examples/wrong-file/a.jsonl","sourceB":"/workspace/agentdiff/examples/wrong-file/b.jsonl","tool":"agentdiff 0.1.0"}}</script>
 <script>
 (function () {
   const data = JSON.parse(document.getElementById("data").textContent);

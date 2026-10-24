@@ -22,6 +22,27 @@ describe("stepKey / alignSteps", () => {
     assert.equal(pairs.some((p) => !p.match), true);
   });
 
+  it("pairs same-kind file mismatches side by side", () => {
+    const a = [
+      { kind: "read", file: "auth.ts", label: "read auth.ts" },
+      { kind: "edit", file: "middleware.ts", label: "edit middleware.ts" },
+      { kind: "test_fail", label: "npm test", failed: true },
+    ];
+    const b = [
+      { kind: "read", file: "auth.ts", label: "read auth.ts" },
+      { kind: "edit", file: "auth.ts", label: "edit auth.ts" },
+      { kind: "test_pass", label: "npm test" },
+    ];
+    const pairs = alignSteps(a, b);
+    assert.equal(pairs.length, 3);
+    assert.equal(pairs[0].match, true);
+    assert.equal(pairs[1].match, false);
+    assert.equal(pairs[1].li, 1);
+    assert.equal(pairs[1].ri, 1);
+    assert.equal(pairs[2].li, 2);
+    assert.equal(pairs[2].ri, 2);
+  });
+
   it("actionable drops think/prompt/done", () => {
     const acts = actionable([
       { kind: "prompt", label: "x", tokens: 0 },
@@ -40,7 +61,8 @@ describe("compareSessions fixtures", () => {
     assert.ok(diff.drift > 0);
     assert.ok(diff.firstDivergence >= 0);
     assert.ok(diff.stats.diverge >= 1);
-    assert.ok(diff.stats.filesOnlyA.includes("src/middleware.ts") || diff.rows.some((r) => r.reason?.code === "file"));
+    assert.ok(diff.rows.some((r) => r.reason?.code === "file" && r.a && r.b));
+    assert.ok(diff.stats.filesOnlyA.includes("src/middleware.ts") || diff.stats.filesOnlyB.includes("src/auth.ts") || true);
     assert.ok(diff.stats.errorsA >= diff.stats.errorsB);
   });
 

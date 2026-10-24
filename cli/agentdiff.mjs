@@ -2,6 +2,8 @@
 import { writeFileSync, existsSync, mkdirSync } from "node:fs";
 import { resolve, dirname, basename } from "node:path";
 import { fileURLToPath } from "node:url";
+import { platform } from "node:os";
+import { spawn } from "node:child_process";
 import { loadSession } from "../src/load.mjs";
 import { compareSessions } from "../src/align.mjs";
 import { renderReport } from "../src/report.mjs";
@@ -31,9 +33,20 @@ options:
   --label-a <name> left column title
   --label-b <name> right column title
   --json           print comparison JSON to stdout instead of HTML
+  --open           open the report in your browser (local file)
 
 Reads Claude Code (~/.claude/projects/**/*.jsonl) and Codex
 (~/.codex/sessions/**/*.jsonl) logs. Offline: nothing is uploaded.`);
+}
+
+function openBrowser(fileUrl) {
+  const cmd = platform() === "darwin" ? "open" : platform() === "win32" ? "cmd" : "xdg-open";
+  const a = platform() === "win32" ? ["/c", "start", "", fileUrl] : [fileUrl];
+  try {
+    spawn(cmd, a, { stdio: "ignore", detached: true }).on("error", () => {}).unref();
+  } catch {
+    /* ignore */
+  }
 }
 
 const cmd = args[0];
@@ -54,7 +67,6 @@ if (cmd === "demo") {
     process.exit(2);
   }
 } else {
-  // allow: agentdiff a.jsonl b.jsonl
   pathA = args[0];
   pathB = args[1];
   if (!pathA || !pathB || String(pathA).startsWith("-")) {
@@ -86,11 +98,17 @@ const html = renderReport(diff, {
 writeFileSync(out, html, "utf8");
 
 const fd = diff.firstDivergence >= 0 ? `#${diff.firstDivergence + 1}` : "none";
+const top = (diff.reasons || []).slice(0, 5);
+const reasonLines = top.length
+  ? "\n  why:\n" + top.map((r) => `    #${r.index + 1}  ${r.detail}`).join("\n")
+  : "";
+
 console.log(`
   AgentDiff  drift ${diff.drift}/100
   A  ${basename(loadedA.path)}  (${diff.stats.stepsA} steps, ${diff.agentA})
   B  ${basename(loadedB.path)}  (${diff.stats.stepsB} steps, ${diff.agentB})
-  divergences ${diff.stats.diverge} · first ${fd}
+  divergences ${diff.stats.diverge} · first ${fd}${reasonLines}
   → ${out}
 `);
 if (!existsSync(out)) process.exit(1);
+if (flag("--open")) openBrowser(`file://${out}`);

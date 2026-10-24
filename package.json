@@ -14,6 +14,8 @@
     "cli",
     "src",
     "examples",
+    "docs/hero.svg",
+    "NOTICE",
     "LICENSE",
     "README.md"
   ],
@@ -37,7 +39,7 @@
     "type": "git",
     "url": "git+https://github.com/barood-labs/agentdiff.git"
   },
-  "homepage": "https://github.com/barood-labs/agentdiff",
+  "homepage": "https://barood-labs.github.io/agentdiff/",
   "license": "MIT",
   "engines": {
     "node": ">=18"

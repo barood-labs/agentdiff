@@ -6,6 +6,8 @@ Point it at two Claude Code or Codex runs of the same task. AgentDiff aligns the
 
 ![AgentDiff hero](docs/hero.svg)
 
+## Install
+
 ```bash
 npx @barood-labs/agentdiff compare run-a.jsonl run-b.jsonl --out report.html
 # or two session folders:
@@ -74,3 +76,13 @@ Live webhooks, cloud agent APIs, Cursor log format, GIF export, SaaS.
 MIT © barood-labs
 
 Session parsers adapted from `@barood-labs/agenttown` (MIT). Divergence framing inspired by `@barood-labs/whydiff` (MIT).
+
+## Publish checklist (maintainers)
+
+Scoped name `@barood-labs/agentdiff` was free on npm as of Oct 23, 2026. Unscoped `agentdiff` was also free — ship scoped to match AgentTown / tinkertoy.
+
+1. `npm test && npm run build`
+2. Create public `barood-labs/agentdiff`, push `main`
+3. Enable GitHub Pages from `/docs`
+4. `npm publish --access public`
+5. X post with `docs/hero.svg` + `npx` one-liner (no `@barood-labs` bare in the tweet body — wrap the command so X does not auto-mention)

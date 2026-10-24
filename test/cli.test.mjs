@@ -65,6 +65,13 @@ describe("CLI", () => {
     assert.ok(Array.isArray(j.rows));
   });
 
+  it("prints top divergence reasons", () => {
+    const r = run(["compare", "examples/login-bug/a.jsonl", "examples/login-bug/b.jsonl", "--out", join(tmpdir(), "agentdiff-why.html")]);
+    assert.equal(r.status, 0, r.stderr || r.stdout);
+    assert.match(r.stdout, /why:/);
+    assert.match(r.stdout, /#\d+/);
+  });
+
   it("fails on missing file", () => {
     const r = run(["compare", "examples/login-bug/a.jsonl", "nope.jsonl"]);
     assert.notEqual(r.status, 0);

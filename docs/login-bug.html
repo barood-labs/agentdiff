@@ -95,9 +95,9 @@ footer { margin-top:28px; color:var(--muted); font-size:11px; text-align:center;
     <div class="meta">claude-code · claude-code · agentdiff 0.1.0</div>
   </div>
   <div class="stats">
-    <div class="pill drift">drift <b>69</b>/100</div>
-    <div class="pill div">divergences <b>8</b></div>
-    <div class="pill">aligned <b>2</b>/10</div>
+    <div class="pill drift">drift <b>63</b>/100</div>
+    <div class="pill div">divergences <b>5</b></div>
+    <div class="pill">aligned <b>2</b>/7</div>
     <div class="pill">steps <b>7</b> / <b>5</b></div>
     <div class="pill">errors <b>2</b> / <b>0</b></div>
     <div class="pill">first ≠ <b>#3</b></div>
@@ -107,7 +107,7 @@ footer { margin-top:28px; color:var(--muted); font-size:11px; text-align:center;
     <button id="btnPrev" type="button">Prev ≠</button>
     <button id="btnNext" type="button">Next ≠</button>
     <label class="meta" for="scrub">scrub</label>
-    <input id="scrub" type="range" min="0" max="9" value="2" />
+    <input id="scrub" type="range" min="0" max="6" value="2" />
     <span class="meta" id="scrubLabel">#3</span>
   </div>
 </header>
@@ -168,8 +168,12 @@ footer { margin-top:28px; color:var(--muted); font-size:11px; text-align:center;
     <div class="lab">read src/middleware.ts</div>
     <div class="file">src/middleware.ts</div>
   </div></td>
-        <td class="mid"><span class="badge diverge">≠</span><div class="why">Only A: read src/middleware.ts</div></td>
-        <td class="side b"><div class="step empty"><span class="ghost">—</span></div></td>
+        <td class="mid"><span class="badge diverge">≠</span><div class="why">File src/middleware.ts ≠ src/auth.ts</div></td>
+        <td class="side b"><div class="step">
+    <span class="chip" style="--c:#6cb6ff">read</span>
+    <div class="lab">read src/auth.ts</div>
+    <div class="file">src/auth.ts</div>
+  </div></td>
       </tr>
 <tr class="row diverge" data-i="3" id="row-3">
         <td class="idx">4</td>
@@ -178,8 +182,12 @@ footer { margin-top:28px; color:var(--muted); font-size:11px; text-align:center;
     <div class="lab">edit src/middleware.ts</div>
     <div class="file">src/middleware.ts</div>
   </div></td>
-        <td class="mid"><span class="badge diverge">≠</span><div class="why">Only A: edit src/middleware.ts</div></td>
-        <td class="side b"><div class="step empty"><span class="ghost">—</span></div></td>
+        <td class="mid"><span class="badge diverge">≠</span><div class="why">File src/middleware.ts ≠ src/auth.ts</div></td>
+        <td class="side b"><div class="step">
+    <span class="chip" style="--c:#f0c674">edit</span>
+    <div class="lab">edit src/auth.ts</div>
+    <div class="file">src/auth.ts</div>
+  </div></td>
       </tr>
 <tr class="row diverge" data-i="4" id="row-4">
         <td class="idx">5</td>
@@ -188,8 +196,12 @@ footer { margin-top:28px; color:var(--muted); font-size:11px; text-align:center;
     <div class="lab">$ npm test -- auth</div>
     
   </div></td>
-        <td class="mid"><span class="badge diverge">≠</span><div class="why">Only A: test_fail</div></td>
-        <td class="side b"><div class="step empty"><span class="ghost">—</span></div></td>
+        <td class="mid"><span class="badge diverge">≠</span><div class="why">Kind test_fail ≠ test_pass</div></td>
+        <td class="side b"><div class="step">
+    <span class="chip" style="--c:#7fd962">test_pass</span>
+    <div class="lab">$ npm test -- auth</div>
+    
+  </div></td>
       </tr>
 <tr class="row diverge" data-i="5" id="row-5">
         <td class="idx">6</td>
@@ -211,40 +223,10 @@ footer { margin-top:28px; color:var(--muted); font-size:11px; text-align:center;
         <td class="mid"><span class="badge diverge">≠</span><div class="why">Only A: test_fail</div></td>
         <td class="side b"><div class="step empty"><span class="ghost">—</span></div></td>
       </tr>
-<tr class="row diverge" data-i="7" id="row-7">
-        <td class="idx">8</td>
-        <td class="side a"><div class="step empty"><span class="ghost">—</span></div></td>
-        <td class="mid"><span class="badge diverge">≠</span><div class="why">Only B: read src/auth.ts</div></td>
-        <td class="side b"><div class="step">
-    <span class="chip" style="--c:#6cb6ff">read</span>
-    <div class="lab">read src/auth.ts</div>
-    <div class="file">src/auth.ts</div>
-  </div></td>
-      </tr>
-<tr class="row diverge" data-i="8" id="row-8">
-        <td class="idx">9</td>
-        <td class="side a"><div class="step empty"><span class="ghost">—</span></div></td>
-        <td class="mid"><span class="badge diverge">≠</span><div class="why">Only B: edit src/auth.ts</div></td>
-        <td class="side b"><div class="step">
-    <span class="chip" style="--c:#f0c674">edit</span>
-    <div class="lab">edit src/auth.ts</div>
-    <div class="file">src/auth.ts</div>
-  </div></td>
-      </tr>
-<tr class="row diverge" data-i="9" id="row-9">
-        <td class="idx">10</td>
-        <td class="side a"><div class="step empty"><span class="ghost">—</span></div></td>
-        <td class="mid"><span class="badge diverge">≠</span><div class="why">Only B: test_pass</div></td>
-        <td class="side b"><div class="step">
-    <span class="chip" style="--c:#7fd962">test_pass</span>
-    <div class="lab">$ npm test -- auth</div>
-    
-  </div></td>
-      </tr>
   </tbody></table>
-  <footer>Generated offline by AgentDiff. Nothing uploaded. 2026-10-24T04:22:47.087Z</footer>
+  <footer>Generated offline by AgentDiff. Nothing uploaded. 2026-10-24T04:24:03.077Z</footer>
 </main>
-<script id="data" type="application/json">{"labelA":"login-bug/a","labelB":"login-bug/b","agentA":"claude-code","agentB":"claude-code","titleA":"Fix login redirect loop","titleB":"Fix login redirect loop","firstDivergence":2,"drift":69,"stats":{"stepsA":7,"stepsB":5,"aligned":10,"same":2,"diverge":8,"errorsA":2,"errorsB":0,"filesOnlyA":["src/middleware.ts"],"filesOnlyB":[],"filesShared":["src/auth.ts","src"]},"reasons":[{"index":2,"code":"only_a","detail":"Only A: read src/middleware.ts"},{"index":3,"code":"only_a","detail":"Only A: edit src/middleware.ts"},{"index":4,"code":"only_a","detail":"Only A: test_fail"},{"index":5,"code":"only_a","detail":"Only A: edit src/middleware.ts"},{"index":6,"code":"only_a","detail":"Only A: test_fail"},{"index":7,"code":"only_b","detail":"Only B: read src/auth.ts"},{"index":8,"code":"only_b","detail":"Only B: edit src/auth.ts"},{"index":9,"code":"only_b","detail":"Only B: test_pass"}],"rows":[{"index":0,"status":"same","reason":null,"a":{"kind":"read","file":"src/auth.ts","label":"read src/auth.ts","failed":false,"tokens":30,"eventIndex":2},"b":{"kind":"read","file":"src/auth.ts","label":"read src/auth.ts","failed":false,"tokens":30,"eventIndex":2}},{"index":1,"status":"same","reason":null,"a":{"kind":"search","file":"src","label":"grep redirect","failed":false,"tokens":60,"eventIndex":3},"b":{"kind":"search","file":"src","label":"grep redirect","failed":false,"tokens":60,"eventIndex":3}},{"index":2,"status":"diverge","reason":{"code":"only_a","detail":"Only A: read src/middleware.ts"},"a":{"kind":"read","file":"src/middleware.ts","label":"read src/middleware.ts","failed":false,"tokens":90,"eventIndex":4},"b":null},{"index":3,"status":"diverge","reason":{"code":"only_a","detail":"Only A: edit src/middleware.ts"},"a":{"kind":"edit","file":"src/middleware.ts","label":"edit src/middleware.ts","failed":false,"tokens":120,"eventIndex":5},"b":null},{"index":4,"status":"diverge","reason":{"code":"only_a","detail":"Only A: test_fail"},"a":{"kind":"test_fail","label":"$ npm test -- auth","failed":false,"tokens":150,"eventIndex":6},"b":null},{"index":5,"status":"diverge","reason":{"code":"only_a","detail":"Only A: edit src/middleware.ts"},"a":{"kind":"edit","file":"src/middleware.ts","label":"edit src/middleware.ts","failed":false,"tokens":180,"eventIndex":7},"b":null},{"index":6,"status":"diverge","reason":{"code":"only_a","detail":"Only A: test_fail"},"a":{"kind":"test_fail","label":"$ npm test -- auth","failed":false,"tokens":210,"eventIndex":8},"b":null},{"index":7,"status":"diverge","reason":{"code":"only_b","detail":"Only B: read src/auth.ts"},"a":null,"b":{"kind":"read","file":"src/auth.ts","label":"read src/auth.ts","failed":false,"tokens":90,"eventIndex":4}},{"index":8,"status":"diverge","reason":{"code":"only_b","detail":"Only B: edit src/auth.ts"},"a":null,"b":{"kind":"edit","file":"src/auth.ts","label":"edit src/auth.ts","failed":false,"tokens":120,"eventIndex":5}},{"index":9,"status":"diverge","reason":{"code":"only_b","detail":"Only B: test_pass"},"a":null,"b":{"kind":"test_pass","label":"$ npm test -- auth","failed":false,"tokens":150,"eventIndex":6}}],"eventsA":[{"kind":"prompt","label":"you: Fix login redirect loop","tokens":0,"eventIndex":0},{"kind":"think","label":"Looking at auth flow.","tokens":30,"eventIndex":1},{"kind":"read","file":"src/auth.ts","label":"read src/auth.ts","tokens":30,"eventIndex":2},{"kind":"search","file":"src","label":"grep redirect","tokens":60,"eventIndex":3},{"kind":"read","file":"src/middleware.ts","label":"read src/middleware.ts","tokens":90,"eventIndex":4},{"kind":"edit","file":"src/middleware.ts","label":"edit src/middleware.ts","tokens":120,"eventIndex":5},{"kind":"test_fail","label":"$ npm test -- auth","tokens":150,"eventIndex":6},{"kind":"edit","file":"src/middleware.ts","label":"edit src/middleware.ts","tokens":180,"eventIndex":7},{"kind":"test_fail","label":"$ npm test -- auth","tokens":210,"eventIndex":8},{"kind":"done","label":"Session complete","tokens":210,"eventIndex":9}],"eventsB":[{"kind":"prompt","label":"you: Fix login redirect loop","tokens":0,"eventIndex":0},{"kind":"think","label":"Looking at auth flow.","tokens":30,"eventIndex":1},{"kind":"read","file":"src/auth.ts","label":"read src/auth.ts","tokens":30,"eventIndex":2},{"kind":"search","file":"src","label":"grep redirect","tokens":60,"eventIndex":3},{"kind":"read","file":"src/auth.ts","label":"read src/auth.ts","tokens":90,"eventIndex":4},{"kind":"edit","file":"src/auth.ts","label":"edit src/auth.ts","tokens":120,"eventIndex":5},{"kind":"test_pass","label":"$ npm test -- auth","tokens":150,"eventIndex":6},{"kind":"done","label":"Session complete","tokens":150,"eventIndex":7}],"meta":{"generatedAt":"2026-10-24T04:22:47.087Z","sourceA":"/workspace/agentdiff/examples/login-bug/a.jsonl","sourceB":"/workspace/agentdiff/examples/login-bug/b.jsonl","tool":"agentdiff 0.1.0"}}</script>
+<script id="data" type="application/json">{"labelA":"login-bug/a","labelB":"login-bug/b","agentA":"claude-code","agentB":"claude-code","titleA":"Fix login redirect loop","titleB":"Fix login redirect loop","firstDivergence":2,"drift":63,"stats":{"stepsA":7,"stepsB":5,"aligned":7,"same":2,"diverge":5,"errorsA":2,"errorsB":0,"filesOnlyA":["src/middleware.ts"],"filesOnlyB":[],"filesShared":["src/auth.ts","src"]},"reasons":[{"index":2,"code":"file","detail":"File src/middleware.ts ≠ src/auth.ts"},{"index":3,"code":"file","detail":"File src/middleware.ts ≠ src/auth.ts"},{"index":4,"code":"kind","detail":"Kind test_fail ≠ test_pass"},{"index":5,"code":"only_a","detail":"Only A: edit src/middleware.ts"},{"index":6,"code":"only_a","detail":"Only A: test_fail"}],"rows":[{"index":0,"status":"same","reason":null,"a":{"kind":"read","file":"src/auth.ts","label":"read src/auth.ts","failed":false,"tokens":30,"eventIndex":2},"b":{"kind":"read","file":"src/auth.ts","label":"read src/auth.ts","failed":false,"tokens":30,"eventIndex":2}},{"index":1,"status":"same","reason":null,"a":{"kind":"search","file":"src","label":"grep redirect","failed":false,"tokens":60,"eventIndex":3},"b":{"kind":"search","file":"src","label":"grep redirect","failed":false,"tokens":60,"eventIndex":3}},{"index":2,"status":"diverge","reason":{"code":"file","detail":"File src/middleware.ts ≠ src/auth.ts"},"a":{"kind":"read","file":"src/middleware.ts","label":"read src/middleware.ts","failed":false,"tokens":90,"eventIndex":4},"b":{"kind":"read","file":"src/auth.ts","label":"read src/auth.ts","failed":false,"tokens":90,"eventIndex":4}},{"index":3,"status":"diverge","reason":{"code":"file","detail":"File src/middleware.ts ≠ src/auth.ts"},"a":{"kind":"edit","file":"src/middleware.ts","label":"edit src/middleware.ts","failed":false,"tokens":120,"eventIndex":5},"b":{"kind":"edit","file":"src/auth.ts","label":"edit src/auth.ts","failed":false,"tokens":120,"eventIndex":5}},{"index":4,"status":"diverge","reason":{"code":"kind","detail":"Kind test_fail ≠ test_pass"},"a":{"kind":"test_fail","label":"$ npm test -- auth","failed":false,"tokens":150,"eventIndex":6},"b":{"kind":"test_pass","label":"$ npm test -- auth","failed":false,"tokens":150,"eventIndex":6}},{"index":5,"status":"diverge","reason":{"code":"only_a","detail":"Only A: edit src/middleware.ts"},"a":{"kind":"edit","file":"src/middleware.ts","label":"edit src/middleware.ts","failed":false,"tokens":180,"eventIndex":7},"b":null},{"index":6,"status":"diverge","reason":{"code":"only_a","detail":"Only A: test_fail"},"a":{"kind":"test_fail","label":"$ npm test -- auth","failed":false,"tokens":210,"eventIndex":8},"b":null}],"eventsA":[{"kind":"prompt","label":"you: Fix login redirect loop","tokens":0,"eventIndex":0},{"kind":"think","label":"Looking at auth flow.","tokens":30,"eventIndex":1},{"kind":"read","file":"src/auth.ts","label":"read src/auth.ts","tokens":30,"eventIndex":2},{"kind":"search","file":"src","label":"grep redirect","tokens":60,"eventIndex":3},{"kind":"read","file":"src/middleware.ts","label":"read src/middleware.ts","tokens":90,"eventIndex":4},{"kind":"edit","file":"src/middleware.ts","label":"edit src/middleware.ts","tokens":120,"eventIndex":5},{"kind":"test_fail","label":"$ npm test -- auth","tokens":150,"eventIndex":6},{"kind":"edit","file":"src/middleware.ts","label":"edit src/middleware.ts","tokens":180,"eventIndex":7},{"kind":"test_fail","label":"$ npm test -- auth","tokens":210,"eventIndex":8},{"kind":"done","label":"Session complete","tokens":210,"eventIndex":9}],"eventsB":[{"kind":"prompt","label":"you: Fix login redirect loop","tokens":0,"eventIndex":0},{"kind":"think","label":"Looking at auth flow.","tokens":30,"eventIndex":1},{"kind":"read","file":"src/auth.ts","label":"read src/auth.ts","tokens":30,"eventIndex":2},{"kind":"search","file":"src","label":"grep redirect","tokens":60,"eventIndex":3},{"kind":"read","file":"src/auth.ts","label":"read src/auth.ts","tokens":90,"eventIndex":4},{"kind":"edit","file":"src/auth.ts","label":"edit src/auth.ts","tokens":120,"eventIndex":5},{"kind":"test_pass","label":"$ npm test -- auth","tokens":150,"eventIndex":6},{"kind":"done","label":"Session complete","tokens":150,"eventIndex":7}],"meta":{"generatedAt":"2026-10-24T04:24:03.077Z","sourceA":"/workspace/agentdiff/examples/login-bug/a.jsonl","sourceB":"/workspace/agentdiff/examples/login-bug/b.jsonl","tool":"agentdiff 0.1.0"}}</script>
 <script>
 (function () {
   const data = JSON.parse(document.getElementById("data").textContent);

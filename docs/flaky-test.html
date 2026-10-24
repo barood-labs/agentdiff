@@ -95,9 +95,9 @@ footer { margin-top:28px; color:var(--muted); font-size:11px; text-align:center;
     <div class="meta">claude-code · claude-code · agentdiff 0.1.0</div>
   </div>
   <div class="stats">
-    <div class="pill drift">drift <b>48</b>/100</div>
-    <div class="pill div">divergences <b>4</b></div>
-    <div class="pill">aligned <b>3</b>/7</div>
+    <div class="pill drift">drift <b>43</b>/100</div>
+    <div class="pill div">divergences <b>3</b></div>
+    <div class="pill">aligned <b>3</b>/6</div>
     <div class="pill">steps <b>5</b> / <b>5</b></div>
     <div class="pill">errors <b>2</b> / <b>1</b></div>
     <div class="pill">first ≠ <b>#3</b></div>
@@ -107,7 +107,7 @@ footer { margin-top:28px; color:var(--muted); font-size:11px; text-align:center;
     <button id="btnPrev" type="button">Prev ≠</button>
     <button id="btnNext" type="button">Next ≠</button>
     <label class="meta" for="scrub">scrub</label>
-    <input id="scrub" type="range" min="0" max="6" value="2" />
+    <input id="scrub" type="range" min="0" max="5" value="2" />
     <span class="meta" id="scrubLabel">#3</span>
   </div>
 </header>
@@ -168,21 +168,15 @@ footer { margin-top:28px; color:var(--muted); font-size:11px; text-align:center;
     <div class="lab">$ npm test -- checkout</div>
     
   </div></td>
-        <td class="mid"><span class="badge diverge">≠</span><div class="why">Only A: test_fail</div></td>
-        <td class="side b"><div class="step empty"><span class="ghost">—</span></div></td>
-      </tr>
-<tr class="row diverge" data-i="3" id="row-3">
-        <td class="idx">4</td>
-        <td class="side a"><div class="step empty"><span class="ghost">—</span></div></td>
-        <td class="mid"><span class="badge diverge">≠</span><div class="why">Only B: search tests</div></td>
+        <td class="mid"><span class="badge diverge">≠</span><div class="why">Kind test_fail ≠ search</div></td>
         <td class="side b"><div class="step">
     <span class="chip" style="--c:#9cdcfe">search</span>
     <div class="lab">grep waitFor|setTimeout</div>
     <div class="file">tests</div>
   </div></td>
       </tr>
-<tr class="row diverge" data-i="4" id="row-4">
-        <td class="idx">5</td>
+<tr class="row diverge" data-i="3" id="row-3">
+        <td class="idx">4</td>
         <td class="side a"><div class="step empty"><span class="ghost">—</span></div></td>
         <td class="mid"><span class="badge diverge">≠</span><div class="why">Only B: edit tests/checkout.test.ts</div></td>
         <td class="side b"><div class="step">
@@ -191,8 +185,8 @@ footer { margin-top:28px; color:var(--muted); font-size:11px; text-align:center;
     <div class="file">tests/checkout.test.ts</div>
   </div></td>
       </tr>
-<tr class="row same" data-i="5" id="row-5">
-        <td class="idx">6</td>
+<tr class="row same" data-i="4" id="row-4">
+        <td class="idx">5</td>
         <td class="side a"><div class="step">
     <span class="chip" style="--c:#7fd962">test_pass</span>
     <div class="lab">$ npm test -- checkout</div>
@@ -205,8 +199,8 @@ footer { margin-top:28px; color:var(--muted); font-size:11px; text-align:center;
     
   </div></td>
       </tr>
-<tr class="row diverge" data-i="6" id="row-6">
-        <td class="idx">7</td>
+<tr class="row diverge" data-i="5" id="row-5">
+        <td class="idx">6</td>
         <td class="side a"><div class="step">
     <span class="chip" style="--c:#ffcb6b">todo</span>
     <div class="lab">todo list 1/1 done</div>
@@ -216,9 +210,9 @@ footer { margin-top:28px; color:var(--muted); font-size:11px; text-align:center;
         <td class="side b"><div class="step empty"><span class="ghost">—</span></div></td>
       </tr>
   </tbody></table>
-  <footer>Generated offline by AgentDiff. Nothing uploaded. 2026-10-24T04:22:47.093Z</footer>
+  <footer>Generated offline by AgentDiff. Nothing uploaded. 2026-10-24T04:24:03.084Z</footer>
 </main>
-<script id="data" type="application/json">{"labelA":"flaky-test/a","labelB":"flaky-test/b","agentA":"claude-code","agentB":"claude-code","titleA":"Stop flaky checkout test","titleB":"Stop flaky checkout test","firstDivergence":2,"drift":48,"stats":{"stepsA":5,"stepsB":5,"aligned":7,"same":3,"diverge":4,"errorsA":2,"errorsB":1,"filesOnlyA":[],"filesOnlyB":["tests"],"filesShared":["tests/checkout.test.ts"]},"reasons":[{"index":2,"code":"only_a","detail":"Only A: test_fail"},{"index":3,"code":"only_b","detail":"Only B: search tests"},{"index":4,"code":"only_b","detail":"Only B: edit tests/checkout.test.ts"},{"index":6,"code":"only_a","detail":"Only A: todo"}],"rows":[{"index":0,"status":"same","reason":null,"a":{"kind":"read","file":"tests/checkout.test.ts","label":"read tests/checkout.test.ts","failed":false,"tokens":30,"eventIndex":1},"b":{"kind":"read","file":"tests/checkout.test.ts","label":"read tests/checkout.test.ts","failed":false,"tokens":30,"eventIndex":1}},{"index":1,"status":"same","reason":null,"a":{"kind":"test_fail","label":"$ npm test -- checkout","failed":false,"tokens":60,"eventIndex":2},"b":{"kind":"test_fail","label":"$ npm test -- checkout","failed":false,"tokens":60,"eventIndex":2}},{"index":2,"status":"diverge","reason":{"code":"only_a","detail":"Only A: test_fail"},"a":{"kind":"test_fail","label":"$ npm test -- checkout","failed":false,"tokens":90,"eventIndex":3},"b":null},{"index":3,"status":"diverge","reason":{"code":"only_b","detail":"Only B: search tests"},"a":null,"b":{"kind":"search","file":"tests","label":"grep waitFor|setTimeout","failed":false,"tokens":90,"eventIndex":3}},{"index":4,"status":"diverge","reason":{"code":"only_b","detail":"Only B: edit tests/checkout.test.ts"},"a":null,"b":{"kind":"edit","file":"tests/checkout.test.ts","label":"edit tests/checkout.test.ts","failed":false,"tokens":120,"eventIndex":4}},{"index":5,"status":"same","reason":null,"a":{"kind":"test_pass","label":"$ npm test -- checkout","failed":false,"tokens":120,"eventIndex":4},"b":{"kind":"test_pass","label":"$ npm test -- checkout","failed":false,"tokens":150,"eventIndex":5}},{"index":6,"status":"diverge","reason":{"code":"only_a","detail":"Only A: todo"},"a":{"kind":"todo","label":"todo list 1/1 done","failed":false,"tokens":150,"eventIndex":6},"b":null}],"eventsA":[{"kind":"prompt","label":"you: Stop flaky checkout test","tokens":0,"eventIndex":0},{"kind":"read","file":"tests/checkout.test.ts","label":"read tests/checkout.test.ts","tokens":30,"eventIndex":1},{"kind":"test_fail","label":"$ npm test -- checkout","tokens":60,"eventIndex":2},{"kind":"test_fail","label":"$ npm test -- checkout","tokens":90,"eventIndex":3},{"kind":"test_pass","label":"$ npm test -- checkout","tokens":120,"eventIndex":4},{"kind":"think","label":"Flaky but green now.","tokens":150,"eventIndex":5},{"kind":"todo","label":"todo list 1/1 done","tokens":150,"eventIndex":6},{"kind":"done","label":"Session complete","tokens":150,"eventIndex":7}],"eventsB":[{"kind":"prompt","label":"you: Stop flaky checkout test","tokens":0,"eventIndex":0},{"kind":"read","file":"tests/checkout.test.ts","label":"read tests/checkout.test.ts","tokens":30,"eventIndex":1},{"kind":"test_fail","label":"$ npm test -- checkout","tokens":60,"eventIndex":2},{"kind":"search","file":"tests","label":"grep waitFor|setTimeout","tokens":90,"eventIndex":3},{"kind":"edit","file":"tests/checkout.test.ts","label":"edit tests/checkout.test.ts","tokens":120,"eventIndex":4},{"kind":"test_pass","label":"$ npm test -- checkout","tokens":150,"eventIndex":5},{"kind":"done","label":"Session complete","tokens":150,"eventIndex":6}],"meta":{"generatedAt":"2026-10-24T04:22:47.093Z","sourceA":"/workspace/agentdiff/examples/flaky-test/a.jsonl","sourceB":"/workspace/agentdiff/examples/flaky-test/b.jsonl","tool":"agentdiff 0.1.0"}}</script>
+<script id="data" type="application/json">{"labelA":"flaky-test/a","labelB":"flaky-test/b","agentA":"claude-code","agentB":"claude-code","titleA":"Stop flaky checkout test","titleB":"Stop flaky checkout test","firstDivergence":2,"drift":43,"stats":{"stepsA":5,"stepsB":5,"aligned":6,"same":3,"diverge":3,"errorsA":2,"errorsB":1,"filesOnlyA":[],"filesOnlyB":["tests"],"filesShared":["tests/checkout.test.ts"]},"reasons":[{"index":2,"code":"kind","detail":"Kind test_fail ≠ search"},{"index":3,"code":"only_b","detail":"Only B: edit tests/checkout.test.ts"},{"index":5,"code":"only_a","detail":"Only A: todo"}],"rows":[{"index":0,"status":"same","reason":null,"a":{"kind":"read","file":"tests/checkout.test.ts","label":"read tests/checkout.test.ts","failed":false,"tokens":30,"eventIndex":1},"b":{"kind":"read","file":"tests/checkout.test.ts","label":"read tests/checkout.test.ts","failed":false,"tokens":30,"eventIndex":1}},{"index":1,"status":"same","reason":null,"a":{"kind":"test_fail","label":"$ npm test -- checkout","failed":false,"tokens":60,"eventIndex":2},"b":{"kind":"test_fail","label":"$ npm test -- checkout","failed":false,"tokens":60,"eventIndex":2}},{"index":2,"status":"diverge","reason":{"code":"kind","detail":"Kind test_fail ≠ search"},"a":{"kind":"test_fail","label":"$ npm test -- checkout","failed":false,"tokens":90,"eventIndex":3},"b":{"kind":"search","file":"tests","label":"grep waitFor|setTimeout","failed":false,"tokens":90,"eventIndex":3}},{"index":3,"status":"diverge","reason":{"code":"only_b","detail":"Only B: edit tests/checkout.test.ts"},"a":null,"b":{"kind":"edit","file":"tests/checkout.test.ts","label":"edit tests/checkout.test.ts","failed":false,"tokens":120,"eventIndex":4}},{"index":4,"status":"same","reason":null,"a":{"kind":"test_pass","label":"$ npm test -- checkout","failed":false,"tokens":120,"eventIndex":4},"b":{"kind":"test_pass","label":"$ npm test -- checkout","failed":false,"tokens":150,"eventIndex":5}},{"index":5,"status":"diverge","reason":{"code":"only_a","detail":"Only A: todo"},"a":{"kind":"todo","label":"todo list 1/1 done","failed":false,"tokens":150,"eventIndex":6},"b":null}],"eventsA":[{"kind":"prompt","label":"you: Stop flaky checkout test","tokens":0,"eventIndex":0},{"kind":"read","file":"tests/checkout.test.ts","label":"read tests/checkout.test.ts","tokens":30,"eventIndex":1},{"kind":"test_fail","label":"$ npm test -- checkout","tokens":60,"eventIndex":2},{"kind":"test_fail","label":"$ npm test -- checkout","tokens":90,"eventIndex":3},{"kind":"test_pass","label":"$ npm test -- checkout","tokens":120,"eventIndex":4},{"kind":"think","label":"Flaky but green now.","tokens":150,"eventIndex":5},{"kind":"todo","label":"todo list 1/1 done","tokens":150,"eventIndex":6},{"kind":"done","label":"Session complete","tokens":150,"eventIndex":7}],"eventsB":[{"kind":"prompt","label":"you: Stop flaky checkout test","tokens":0,"eventIndex":0},{"kind":"read","file":"tests/checkout.test.ts","label":"read tests/checkout.test.ts","tokens":30,"eventIndex":1},{"kind":"test_fail","label":"$ npm test -- checkout","tokens":60,"eventIndex":2},{"kind":"search","file":"tests","label":"grep waitFor|setTimeout","tokens":90,"eventIndex":3},{"kind":"edit","file":"tests/checkout.test.ts","label":"edit tests/checkout.test.ts","tokens":120,"eventIndex":4},{"kind":"test_pass","label":"$ npm test -- checkout","tokens":150,"eventIndex":5},{"kind":"done","label":"Session complete","tokens":150,"eventIndex":6}],"meta":{"generatedAt":"2026-10-24T04:24:03.084Z","sourceA":"/workspace/agentdiff/examples/flaky-test/a.jsonl","sourceB":"/workspace/agentdiff/examples/flaky-test/b.jsonl","tool":"agentdiff 0.1.0"}}</script>
 <script>
 (function () {
   const data = JSON.parse(document.getElementById("data").textContent);
