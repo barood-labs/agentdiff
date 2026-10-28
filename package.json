@@ -1,7 +1,7 @@
 {
   "name": "@barood-labs/agentdiff",
-  "version": "0.1.1",
-  "description": "Compare two AI coding-agent sessions side by side. Dual timeline, first-divergence jump, offline single-file HTML report.",
+  "version": "0.2.0",
+  "description": "Compare two AI coding-agent sessions side by side. Dual timeline, first-divergence jump, plain-English why, offline HTML + Markdown reports.",
   "type": "module",
   "bin": {
     "agentdiff": "cli/agentdiff.mjs"
@@ -33,7 +33,10 @@
     "session",
     "debug",
     "cli",
-    "visualization"
+    "visualization",
+    "markdown",
+    "debugging",
+    "divergence"
   ],
   "repository": {
     "type": "git",

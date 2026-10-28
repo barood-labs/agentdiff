@@ -65,6 +65,15 @@ describe("CLI", () => {
     assert.ok(Array.isArray(j.rows));
   });
 
+  it("--md prints Markdown summary", () => {
+    const r = run(["compare", "examples/login-bug/a.jsonl", "examples/login-bug/b.jsonl", "--md"]);
+    assert.equal(r.status, 0);
+    assert.match(r.stdout, /# AgentDiff/);
+    assert.match(r.stdout, /Why they forked/);
+    assert.match(r.stdout, /drift/i);
+  });
+
+
   it("prints top divergence reasons", () => {
     const r = run(["compare", "examples/login-bug/a.jsonl", "examples/login-bug/b.jsonl", "--out", join(tmpdir(), "agentdiff-why.html")]);
     assert.equal(r.status, 0, r.stderr || r.stdout);

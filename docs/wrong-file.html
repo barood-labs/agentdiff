@@ -77,6 +77,16 @@ td.side { width:calc((100% - 176px) / 2); }
 .bar .t i { display:block; height:100%; background:var(--accent); }
 .files { font-size:12px; font-family:var(--mono); color:var(--muted); }
 .files b { color:var(--text); }
+.story {
+  background:linear-gradient(135deg, rgba(163,113,247,.12), rgba(88,166,255,.08));
+  border:1px solid #30363d; border-radius:12px; padding:14px 16px; margin:0 0 16px;
+}
+.story h2 { margin:0 0 8px; font-size:15px; font-weight:650; color:#e6edf3; }
+.story p { margin:0 0 8px; color:var(--muted); font-size:13px; }
+.story ul { margin:8px 0 0; padding-left:18px; color:#ffa657; font-size:12.5px; font-family:var(--mono); }
+.story .actions { margin-top:10px; display:flex; gap:8px; flex-wrap:wrap; }
+.toast { color:#3fb950; font-size:12px; margin-left:6px; opacity:0; transition:opacity .2s; }
+.toast.show { opacity:1; }
 footer { margin-top:28px; color:var(--muted); font-size:11px; text-align:center; }
 @media (max-width:800px) {
   .cols { grid-template-columns:1fr; }
@@ -92,7 +102,7 @@ footer { margin-top:28px; color:var(--muted); font-size:11px; text-align:center;
       <h1><span>AgentDiff</span> — side-by-side agent replay</h1>
       <div class="meta">/workspace/agentdiff/examples/wrong-file/a.jsonl &nbsp;vs&nbsp; /workspace/agentdiff/examples/wrong-file/b.jsonl</div>
     </div>
-    <div class="meta">claude-code · claude-code · agentdiff 0.1.1</div>
+    <div class="meta">claude-code · claude-code · agentdiff 0.2.0</div>
   </div>
   <div class="stats">
     <div class="pill drift">drift <b>84</b>/100</div>
@@ -113,6 +123,15 @@ footer { margin-top:28px; color:var(--muted); font-size:11px; text-align:center;
   </div>
 </header>
 <main>
+  <section class="story" id="story">
+    <h2>They fork at step #1: Kind read ≠ search.</h2>
+    <p>Compared 3 actionable steps on A (claude-code) with 4 on B (claude-code). 0 aligned, 4 diverged.</p><p>File asymmetry: only A touched README.md; only B touched src, src/parse.ts.</p><p>Error/test-fail count differs: A 1, B 0.</p>
+    <ul><li>#1 — Kind read ≠ search</li><li>#2 — Kind edit ≠ read</li><li>#3 — Kind test_fail ≠ edit</li><li>#4 — Only B: test_pass</li></ul>
+    <div class="actions">
+      <button type="button" id="btnCopy" class="primary">Copy summary</button>
+      <span class="toast" id="copyToast">Copied</span>
+    </div>
+  </section>
   <div class="cols">
     <div class="card">
       <h3>Tool mix — A</h3>
@@ -187,9 +206,9 @@ footer { margin-top:28px; color:var(--muted); font-size:11px; text-align:center;
   </div></td>
       </tr>
   </tbody></table>
-  <footer>Generated offline by AgentDiff. Nothing uploaded. 2026-10-24T05:09:40.545Z</footer>
+  <footer>Generated offline by AgentDiff. Nothing uploaded. 2026-10-28T11:06:44.691Z</footer>
 </main>
-<script id="data" type="application/json">{"labelA":"wrong-file/a","labelB":"wrong-file/b","agentA":"claude-code","agentB":"claude-code","titleA":"Fix JSON parse error on empty input","titleB":"Fix JSON parse error on empty input","firstDivergence":0,"drift":84,"stats":{"stepsA":3,"stepsB":4,"aligned":4,"same":0,"diverge":4,"errorsA":1,"errorsB":0,"filesOnlyA":["README.md"],"filesOnlyB":["src","src/parse.ts"],"filesShared":[]},"reasons":[{"index":0,"code":"kind","detail":"Kind read ≠ search"},{"index":1,"code":"kind","detail":"Kind edit ≠ read"},{"index":2,"code":"kind","detail":"Kind test_fail ≠ edit"},{"index":3,"code":"only_b","detail":"Only B: test_pass"}],"rows":[{"index":0,"status":"diverge","reason":{"code":"kind","detail":"Kind read ≠ search"},"a":{"kind":"read","file":"README.md","label":"read README.md","failed":false,"tokens":30,"eventIndex":1},"b":{"kind":"search","file":"src","label":"grep JSON.parse","failed":false,"tokens":30,"eventIndex":1}},{"index":1,"status":"diverge","reason":{"code":"kind","detail":"Kind edit ≠ read"},"a":{"kind":"edit","file":"README.md","label":"edit README.md","failed":false,"tokens":60,"eventIndex":2},"b":{"kind":"read","file":"src/parse.ts","label":"read src/parse.ts","failed":false,"tokens":60,"eventIndex":2}},{"index":2,"status":"diverge","reason":{"code":"kind","detail":"Kind test_fail ≠ edit"},"a":{"kind":"test_fail","label":"$ npm test","failed":false,"tokens":90,"eventIndex":3},"b":{"kind":"edit","file":"src/parse.ts","label":"edit src/parse.ts","failed":false,"tokens":90,"eventIndex":3}},{"index":3,"status":"diverge","reason":{"code":"only_b","detail":"Only B: test_pass"},"a":null,"b":{"kind":"test_pass","label":"$ npm test","failed":false,"tokens":120,"eventIndex":4}}],"eventsA":[{"kind":"prompt","label":"you: Fix JSON parse error on empty input","tokens":0,"eventIndex":0},{"kind":"read","file":"README.md","label":"read README.md","tokens":30,"eventIndex":1},{"kind":"edit","file":"README.md","label":"edit README.md","tokens":60,"eventIndex":2},{"kind":"test_fail","label":"$ npm test","tokens":90,"eventIndex":3},{"kind":"done","label":"Session complete","tokens":90,"eventIndex":4}],"eventsB":[{"kind":"prompt","label":"you: Fix JSON parse error on empty input","tokens":0,"eventIndex":0},{"kind":"search","file":"src","label":"grep JSON.parse","tokens":30,"eventIndex":1},{"kind":"read","file":"src/parse.ts","label":"read src/parse.ts","tokens":60,"eventIndex":2},{"kind":"edit","file":"src/parse.ts","label":"edit src/parse.ts","tokens":90,"eventIndex":3},{"kind":"test_pass","label":"$ npm test","tokens":120,"eventIndex":4},{"kind":"done","label":"Session complete","tokens":120,"eventIndex":5}],"meta":{"generatedAt":"2026-10-24T05:09:40.545Z","sourceA":"/workspace/agentdiff/examples/wrong-file/a.jsonl","sourceB":"/workspace/agentdiff/examples/wrong-file/b.jsonl","tool":"agentdiff 0.1.1"}}</script>
+<script id="data" type="application/json">{"labelA":"wrong-file/a","labelB":"wrong-file/b","agentA":"claude-code","agentB":"claude-code","titleA":"Fix JSON parse error on empty input","titleB":"Fix JSON parse error on empty input","firstDivergence":0,"drift":84,"stats":{"stepsA":3,"stepsB":4,"aligned":4,"same":0,"diverge":4,"errorsA":1,"errorsB":0,"filesOnlyA":["README.md"],"filesOnlyB":["src","src/parse.ts"],"filesShared":[]},"reasons":[{"index":0,"code":"kind","detail":"Kind read ≠ search"},{"index":1,"code":"kind","detail":"Kind edit ≠ read"},{"index":2,"code":"kind","detail":"Kind test_fail ≠ edit"},{"index":3,"code":"only_b","detail":"Only B: test_pass"}],"rows":[{"index":0,"status":"diverge","reason":{"code":"kind","detail":"Kind read ≠ search"},"a":{"kind":"read","file":"README.md","label":"read README.md","failed":false,"tokens":30,"eventIndex":1},"b":{"kind":"search","file":"src","label":"grep JSON.parse","failed":false,"tokens":30,"eventIndex":1}},{"index":1,"status":"diverge","reason":{"code":"kind","detail":"Kind edit ≠ read"},"a":{"kind":"edit","file":"README.md","label":"edit README.md","failed":false,"tokens":60,"eventIndex":2},"b":{"kind":"read","file":"src/parse.ts","label":"read src/parse.ts","failed":false,"tokens":60,"eventIndex":2}},{"index":2,"status":"diverge","reason":{"code":"kind","detail":"Kind test_fail ≠ edit"},"a":{"kind":"test_fail","label":"$ npm test","failed":false,"tokens":90,"eventIndex":3},"b":{"kind":"edit","file":"src/parse.ts","label":"edit src/parse.ts","failed":false,"tokens":90,"eventIndex":3}},{"index":3,"status":"diverge","reason":{"code":"only_b","detail":"Only B: test_pass"},"a":null,"b":{"kind":"test_pass","label":"$ npm test","failed":false,"tokens":120,"eventIndex":4}}],"eventsA":[{"kind":"prompt","label":"you: Fix JSON parse error on empty input","tokens":0,"eventIndex":0},{"kind":"read","file":"README.md","label":"read README.md","tokens":30,"eventIndex":1},{"kind":"edit","file":"README.md","label":"edit README.md","tokens":60,"eventIndex":2},{"kind":"test_fail","label":"$ npm test","tokens":90,"eventIndex":3},{"kind":"done","label":"Session complete","tokens":90,"eventIndex":4}],"eventsB":[{"kind":"prompt","label":"you: Fix JSON parse error on empty input","tokens":0,"eventIndex":0},{"kind":"search","file":"src","label":"grep JSON.parse","tokens":30,"eventIndex":1},{"kind":"read","file":"src/parse.ts","label":"read src/parse.ts","tokens":60,"eventIndex":2},{"kind":"edit","file":"src/parse.ts","label":"edit src/parse.ts","tokens":90,"eventIndex":3},{"kind":"test_pass","label":"$ npm test","tokens":120,"eventIndex":4},{"kind":"done","label":"Session complete","tokens":120,"eventIndex":5}],"meta":{"generatedAt":"2026-10-28T11:06:44.691Z","sourceA":"/workspace/agentdiff/examples/wrong-file/a.jsonl","sourceB":"/workspace/agentdiff/examples/wrong-file/b.jsonl","tool":"agentdiff 0.2.0"}}</script>
 <script>
 (function () {
   const data = JSON.parse(document.getElementById("data").textContent);
@@ -237,6 +256,19 @@ footer { margin-top:28px; color:var(--muted); font-size:11px; text-align:center;
     else if (e.key === "ArrowRight" || e.key === "l" || e.key === "L") { e.preventDefault(); activate(cur + 1); }
     else if (e.key === "ArrowLeft" || e.key === "h" || e.key === "H") { e.preventDefault(); activate(cur - 1); }
   });
+  const btnCopy = document.getElementById("btnCopy");
+  const toast = document.getElementById("copyToast");
+  const shareText = atob("QWdlbnREaWZmIMK3IHdyb25nLWZpbGUvYSB2cyB3cm9uZy1maWxlL2IKZHJpZnQgODQvMTAwIMK3IDQgZGl2ZXJnZW5jZXMgwrcgZmlyc3Qg4omgICMxClRoZXkgZm9yayBhdCBzdGVwICMxOiBLaW5kIHJlYWQg4omgIHNlYXJjaC4K4oCiICMxIOKAlCBLaW5kIHJlYWQg4omgIHNlYXJjaArigKIgIzIg4oCUIEtpbmQgZWRpdCDiiaAgcmVhZArigKIgIzMg4oCUIEtpbmQgdGVzdF9mYWlsIOKJoCBlZGl0CuKAoiAjNCDigJQgT25seSBCOiB0ZXN0X3Bhc3M=");
+  if (btnCopy) btnCopy.onclick = async () => {
+    try {
+      await navigator.clipboard.writeText(shareText);
+    } catch {
+      const ta = document.createElement("textarea");
+      ta.value = shareText; document.body.appendChild(ta); ta.select();
+      document.execCommand("copy"); ta.remove();
+    }
+    if (toast) { toast.classList.add("show"); setTimeout(() => toast.classList.remove("show"), 1200); }
+  };
   activate(cur);
 })();
 </script>

@@ -1,3 +1,4 @@
+import { explainDiff } from "./explain.mjs";
 /** Escape text for HTML text nodes / attributes. */
 export function esc(s) {
   return String(s ?? "")
@@ -52,7 +53,7 @@ export function renderReport(diff, meta = {}) {
       generatedAt: meta.generatedAt || new Date().toISOString(),
       sourceA: meta.sourceA || "",
       sourceB: meta.sourceB || "",
-      tool: "agentdiff 0.1.1",
+      tool: "agentdiff 0.2.0",
     },
   };
   const json = JSON.stringify(data).replace(/</g, "\\u003c");
@@ -74,6 +75,12 @@ export function renderReport(diff, meta = {}) {
 
   const histA = histogram(data.rows.map((r) => r.a).filter(Boolean));
   const histB = histogram(data.rows.map((r) => r.b).filter(Boolean));
+  const story = explainDiff(diff);
+  const storyParas = story.paragraphs.map((p) => `<p>${esc(p)}</p>`).join("");
+  const storyBullets = story.bullets.length
+    ? `<ul>${story.bullets.map((b) => `<li>${esc(b)}</li>`).join("")}</ul>`
+    : "";
+  const shareB64 = Buffer.from(story.shareText, "utf8").toString("base64");
 
   return `<!DOCTYPE html>
 <html lang="en">
@@ -154,6 +161,16 @@ td.side { width:calc((100% - 176px) / 2); }
 .bar .t i { display:block; height:100%; background:var(--accent); }
 .files { font-size:12px; font-family:var(--mono); color:var(--muted); }
 .files b { color:var(--text); }
+.story {
+  background:linear-gradient(135deg, rgba(163,113,247,.12), rgba(88,166,255,.08));
+  border:1px solid #30363d; border-radius:12px; padding:14px 16px; margin:0 0 16px;
+}
+.story h2 { margin:0 0 8px; font-size:15px; font-weight:650; color:#e6edf3; }
+.story p { margin:0 0 8px; color:var(--muted); font-size:13px; }
+.story ul { margin:8px 0 0; padding-left:18px; color:#ffa657; font-size:12.5px; font-family:var(--mono); }
+.story .actions { margin-top:10px; display:flex; gap:8px; flex-wrap:wrap; }
+.toast { color:#3fb950; font-size:12px; margin-left:6px; opacity:0; transition:opacity .2s; }
+.toast.show { opacity:1; }
 footer { margin-top:28px; color:var(--muted); font-size:11px; text-align:center; }
 @media (max-width:800px) {
   .cols { grid-template-columns:1fr; }
@@ -190,6 +207,15 @@ footer { margin-top:28px; color:var(--muted); font-size:11px; text-align:center;
   </div>
 </header>
 <main>
+  <section class="story" id="story">
+    <h2>${esc(story.headline)}</h2>
+    ${storyParas}
+    ${storyBullets}
+    <div class="actions">
+      <button type="button" id="btnCopy" class="primary">Copy summary</button>
+      <span class="toast" id="copyToast">Copied</span>
+    </div>
+  </section>
   <div class="cols">
     <div class="card">
       <h3>Tool mix — A</h3>
@@ -263,6 +289,19 @@ ${rowsHtml}
     else if (e.key === "ArrowRight" || e.key === "l" || e.key === "L") { e.preventDefault(); activate(cur + 1); }
     else if (e.key === "ArrowLeft" || e.key === "h" || e.key === "H") { e.preventDefault(); activate(cur - 1); }
   });
+  const btnCopy = document.getElementById("btnCopy");
+  const toast = document.getElementById("copyToast");
+  const shareText = atob("${shareB64}");
+  if (btnCopy) btnCopy.onclick = async () => {
+    try {
+      await navigator.clipboard.writeText(shareText);
+    } catch {
+      const ta = document.createElement("textarea");
+      ta.value = shareText; document.body.appendChild(ta); ta.select();
+      document.execCommand("copy"); ta.remove();
+    }
+    if (toast) { toast.classList.add("show"); setTimeout(() => toast.classList.remove("show"), 1200); }
+  };
   activate(cur);
 })();
 </script>

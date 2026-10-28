@@ -7,6 +7,7 @@ import { spawn } from "node:child_process";
 import { loadSession } from "../src/load.mjs";
 import { compareSessions } from "../src/align.mjs";
 import { renderReport } from "../src/report.mjs";
+import { explainDiff, renderMarkdown } from "../src/explain.mjs";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(__dirname, "..");
@@ -33,6 +34,7 @@ options:
   --label-a <name> left column title
   --label-b <name> right column title
   --json           print comparison JSON to stdout instead of HTML
+  --md             print a Markdown summary (Discord / PR / X-ready)
   --open           open the report in your browser (local file)
 
 Reads Claude Code (~/.claude/projects/**/*.jsonl) and Codex
@@ -88,6 +90,18 @@ if (flag("--json")) {
   process.exit(0);
 }
 
+if (flag("--md")) {
+  const mdOut = opt("--out");
+  const md = renderMarkdown(diff, { sourceA: loadedA.path, sourceB: loadedB.path });
+  if (mdOut) {
+    writeFileSync(resolve(mdOut), md, "utf8");
+    console.log(`→ ${resolve(mdOut)}`);
+  } else {
+    process.stdout.write(md);
+  }
+  process.exit(0);
+}
+
 const out = resolve(opt("--out") || "agentdiff-report.html");
 mkdirSync(dirname(out), { recursive: true });
 const html = renderReport(diff, {
@@ -98,6 +112,7 @@ const html = renderReport(diff, {
 writeFileSync(out, html, "utf8");
 
 const fd = diff.firstDivergence >= 0 ? `#${diff.firstDivergence + 1}` : "none";
+const story = explainDiff(diff);
 const top = (diff.reasons || []).slice(0, 5);
 const reasonLines = top.length
   ? "\n  why:\n" + top.map((r) => `    #${r.index + 1}  ${r.detail}`).join("\n")
@@ -105,6 +120,7 @@ const reasonLines = top.length
 
 console.log(`
   AgentDiff  drift ${diff.drift}/100
+  ${story.headline}
   A  ${basename(loadedA.path)}  (${diff.stats.stepsA} steps, ${diff.agentA})
   B  ${basename(loadedB.path)}  (${diff.stats.stepsB} steps, ${diff.agentB})
   divergences ${diff.stats.diverge} · first ${fd}${reasonLines}

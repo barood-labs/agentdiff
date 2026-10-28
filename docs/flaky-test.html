@@ -77,6 +77,16 @@ td.side { width:calc((100% - 176px) / 2); }
 .bar .t i { display:block; height:100%; background:var(--accent); }
 .files { font-size:12px; font-family:var(--mono); color:var(--muted); }
 .files b { color:var(--text); }
+.story {
+  background:linear-gradient(135deg, rgba(163,113,247,.12), rgba(88,166,255,.08));
+  border:1px solid #30363d; border-radius:12px; padding:14px 16px; margin:0 0 16px;
+}
+.story h2 { margin:0 0 8px; font-size:15px; font-weight:650; color:#e6edf3; }
+.story p { margin:0 0 8px; color:var(--muted); font-size:13px; }
+.story ul { margin:8px 0 0; padding-left:18px; color:#ffa657; font-size:12.5px; font-family:var(--mono); }
+.story .actions { margin-top:10px; display:flex; gap:8px; flex-wrap:wrap; }
+.toast { color:#3fb950; font-size:12px; margin-left:6px; opacity:0; transition:opacity .2s; }
+.toast.show { opacity:1; }
 footer { margin-top:28px; color:var(--muted); font-size:11px; text-align:center; }
 @media (max-width:800px) {
   .cols { grid-template-columns:1fr; }
@@ -92,7 +102,7 @@ footer { margin-top:28px; color:var(--muted); font-size:11px; text-align:center;
       <h1><span>AgentDiff</span> — side-by-side agent replay</h1>
       <div class="meta">/workspace/agentdiff/examples/flaky-test/a.jsonl &nbsp;vs&nbsp; /workspace/agentdiff/examples/flaky-test/b.jsonl</div>
     </div>
-    <div class="meta">claude-code · claude-code · agentdiff 0.1.1</div>
+    <div class="meta">claude-code · claude-code · agentdiff 0.2.0</div>
   </div>
   <div class="stats">
     <div class="pill drift">drift <b>43</b>/100</div>
@@ -113,6 +123,15 @@ footer { margin-top:28px; color:var(--muted); font-size:11px; text-align:center;
   </div>
 </header>
 <main>
+  <section class="story" id="story">
+    <h2>They fork at step #3: Kind test_fail ≠ search.</h2>
+    <p>Compared 5 actionable steps on A (claude-code) with 5 on B (claude-code). 3 aligned, 3 diverged.</p><p>File asymmetry: only B touched tests.</p><p>Error/test-fail count differs: A 2, B 1.</p>
+    <ul><li>#3 — Kind test_fail ≠ search</li><li>#4 — Only B: edit tests/checkout.test.ts</li><li>#6 — Only A: todo</li></ul>
+    <div class="actions">
+      <button type="button" id="btnCopy" class="primary">Copy summary</button>
+      <span class="toast" id="copyToast">Copied</span>
+    </div>
+  </section>
   <div class="cols">
     <div class="card">
       <h3>Tool mix — A</h3>
@@ -211,9 +230,9 @@ footer { margin-top:28px; color:var(--muted); font-size:11px; text-align:center;
         <td class="side b"><div class="step empty"><span class="ghost">—</span></div></td>
       </tr>
   </tbody></table>
-  <footer>Generated offline by AgentDiff. Nothing uploaded. 2026-10-24T05:09:40.544Z</footer>
+  <footer>Generated offline by AgentDiff. Nothing uploaded. 2026-10-28T11:06:44.689Z</footer>
 </main>
-<script id="data" type="application/json">{"labelA":"flaky-test/a","labelB":"flaky-test/b","agentA":"claude-code","agentB":"claude-code","titleA":"Stop flaky checkout test","titleB":"Stop flaky checkout test","firstDivergence":2,"drift":43,"stats":{"stepsA":5,"stepsB":5,"aligned":6,"same":3,"diverge":3,"errorsA":2,"errorsB":1,"filesOnlyA":[],"filesOnlyB":["tests"],"filesShared":["tests/checkout.test.ts"]},"reasons":[{"index":2,"code":"kind","detail":"Kind test_fail ≠ search"},{"index":3,"code":"only_b","detail":"Only B: edit tests/checkout.test.ts"},{"index":5,"code":"only_a","detail":"Only A: todo"}],"rows":[{"index":0,"status":"same","reason":null,"a":{"kind":"read","file":"tests/checkout.test.ts","label":"read tests/checkout.test.ts","failed":false,"tokens":30,"eventIndex":1},"b":{"kind":"read","file":"tests/checkout.test.ts","label":"read tests/checkout.test.ts","failed":false,"tokens":30,"eventIndex":1}},{"index":1,"status":"same","reason":null,"a":{"kind":"test_fail","label":"$ npm test -- checkout","failed":false,"tokens":60,"eventIndex":2},"b":{"kind":"test_fail","label":"$ npm test -- checkout","failed":false,"tokens":60,"eventIndex":2}},{"index":2,"status":"diverge","reason":{"code":"kind","detail":"Kind test_fail ≠ search"},"a":{"kind":"test_fail","label":"$ npm test -- checkout","failed":false,"tokens":90,"eventIndex":3},"b":{"kind":"search","file":"tests","label":"grep waitFor|setTimeout","failed":false,"tokens":90,"eventIndex":3}},{"index":3,"status":"diverge","reason":{"code":"only_b","detail":"Only B: edit tests/checkout.test.ts"},"a":null,"b":{"kind":"edit","file":"tests/checkout.test.ts","label":"edit tests/checkout.test.ts","failed":false,"tokens":120,"eventIndex":4}},{"index":4,"status":"same","reason":null,"a":{"kind":"test_pass","label":"$ npm test -- checkout","failed":false,"tokens":120,"eventIndex":4},"b":{"kind":"test_pass","label":"$ npm test -- checkout","failed":false,"tokens":150,"eventIndex":5}},{"index":5,"status":"diverge","reason":{"code":"only_a","detail":"Only A: todo"},"a":{"kind":"todo","label":"todo list 1/1 done","failed":false,"tokens":150,"eventIndex":6},"b":null}],"eventsA":[{"kind":"prompt","label":"you: Stop flaky checkout test","tokens":0,"eventIndex":0},{"kind":"read","file":"tests/checkout.test.ts","label":"read tests/checkout.test.ts","tokens":30,"eventIndex":1},{"kind":"test_fail","label":"$ npm test -- checkout","tokens":60,"eventIndex":2},{"kind":"test_fail","label":"$ npm test -- checkout","tokens":90,"eventIndex":3},{"kind":"test_pass","label":"$ npm test -- checkout","tokens":120,"eventIndex":4},{"kind":"think","label":"Flaky but green now.","tokens":150,"eventIndex":5},{"kind":"todo","label":"todo list 1/1 done","tokens":150,"eventIndex":6},{"kind":"done","label":"Session complete","tokens":150,"eventIndex":7}],"eventsB":[{"kind":"prompt","label":"you: Stop flaky checkout test","tokens":0,"eventIndex":0},{"kind":"read","file":"tests/checkout.test.ts","label":"read tests/checkout.test.ts","tokens":30,"eventIndex":1},{"kind":"test_fail","label":"$ npm test -- checkout","tokens":60,"eventIndex":2},{"kind":"search","file":"tests","label":"grep waitFor|setTimeout","tokens":90,"eventIndex":3},{"kind":"edit","file":"tests/checkout.test.ts","label":"edit tests/checkout.test.ts","tokens":120,"eventIndex":4},{"kind":"test_pass","label":"$ npm test -- checkout","tokens":150,"eventIndex":5},{"kind":"done","label":"Session complete","tokens":150,"eventIndex":6}],"meta":{"generatedAt":"2026-10-24T05:09:40.544Z","sourceA":"/workspace/agentdiff/examples/flaky-test/a.jsonl","sourceB":"/workspace/agentdiff/examples/flaky-test/b.jsonl","tool":"agentdiff 0.1.1"}}</script>
+<script id="data" type="application/json">{"labelA":"flaky-test/a","labelB":"flaky-test/b","agentA":"claude-code","agentB":"claude-code","titleA":"Stop flaky checkout test","titleB":"Stop flaky checkout test","firstDivergence":2,"drift":43,"stats":{"stepsA":5,"stepsB":5,"aligned":6,"same":3,"diverge":3,"errorsA":2,"errorsB":1,"filesOnlyA":[],"filesOnlyB":["tests"],"filesShared":["tests/checkout.test.ts"]},"reasons":[{"index":2,"code":"kind","detail":"Kind test_fail ≠ search"},{"index":3,"code":"only_b","detail":"Only B: edit tests/checkout.test.ts"},{"index":5,"code":"only_a","detail":"Only A: todo"}],"rows":[{"index":0,"status":"same","reason":null,"a":{"kind":"read","file":"tests/checkout.test.ts","label":"read tests/checkout.test.ts","failed":false,"tokens":30,"eventIndex":1},"b":{"kind":"read","file":"tests/checkout.test.ts","label":"read tests/checkout.test.ts","failed":false,"tokens":30,"eventIndex":1}},{"index":1,"status":"same","reason":null,"a":{"kind":"test_fail","label":"$ npm test -- checkout","failed":false,"tokens":60,"eventIndex":2},"b":{"kind":"test_fail","label":"$ npm test -- checkout","failed":false,"tokens":60,"eventIndex":2}},{"index":2,"status":"diverge","reason":{"code":"kind","detail":"Kind test_fail ≠ search"},"a":{"kind":"test_fail","label":"$ npm test -- checkout","failed":false,"tokens":90,"eventIndex":3},"b":{"kind":"search","file":"tests","label":"grep waitFor|setTimeout","failed":false,"tokens":90,"eventIndex":3}},{"index":3,"status":"diverge","reason":{"code":"only_b","detail":"Only B: edit tests/checkout.test.ts"},"a":null,"b":{"kind":"edit","file":"tests/checkout.test.ts","label":"edit tests/checkout.test.ts","failed":false,"tokens":120,"eventIndex":4}},{"index":4,"status":"same","reason":null,"a":{"kind":"test_pass","label":"$ npm test -- checkout","failed":false,"tokens":120,"eventIndex":4},"b":{"kind":"test_pass","label":"$ npm test -- checkout","failed":false,"tokens":150,"eventIndex":5}},{"index":5,"status":"diverge","reason":{"code":"only_a","detail":"Only A: todo"},"a":{"kind":"todo","label":"todo list 1/1 done","failed":false,"tokens":150,"eventIndex":6},"b":null}],"eventsA":[{"kind":"prompt","label":"you: Stop flaky checkout test","tokens":0,"eventIndex":0},{"kind":"read","file":"tests/checkout.test.ts","label":"read tests/checkout.test.ts","tokens":30,"eventIndex":1},{"kind":"test_fail","label":"$ npm test -- checkout","tokens":60,"eventIndex":2},{"kind":"test_fail","label":"$ npm test -- checkout","tokens":90,"eventIndex":3},{"kind":"test_pass","label":"$ npm test -- checkout","tokens":120,"eventIndex":4},{"kind":"think","label":"Flaky but green now.","tokens":150,"eventIndex":5},{"kind":"todo","label":"todo list 1/1 done","tokens":150,"eventIndex":6},{"kind":"done","label":"Session complete","tokens":150,"eventIndex":7}],"eventsB":[{"kind":"prompt","label":"you: Stop flaky checkout test","tokens":0,"eventIndex":0},{"kind":"read","file":"tests/checkout.test.ts","label":"read tests/checkout.test.ts","tokens":30,"eventIndex":1},{"kind":"test_fail","label":"$ npm test -- checkout","tokens":60,"eventIndex":2},{"kind":"search","file":"tests","label":"grep waitFor|setTimeout","tokens":90,"eventIndex":3},{"kind":"edit","file":"tests/checkout.test.ts","label":"edit tests/checkout.test.ts","tokens":120,"eventIndex":4},{"kind":"test_pass","label":"$ npm test -- checkout","tokens":150,"eventIndex":5},{"kind":"done","label":"Session complete","tokens":150,"eventIndex":6}],"meta":{"generatedAt":"2026-10-28T11:06:44.689Z","sourceA":"/workspace/agentdiff/examples/flaky-test/a.jsonl","sourceB":"/workspace/agentdiff/examples/flaky-test/b.jsonl","tool":"agentdiff 0.2.0"}}</script>
 <script>
 (function () {
   const data = JSON.parse(document.getElementById("data").textContent);
@@ -261,6 +280,19 @@ footer { margin-top:28px; color:var(--muted); font-size:11px; text-align:center;
     else if (e.key === "ArrowRight" || e.key === "l" || e.key === "L") { e.preventDefault(); activate(cur + 1); }
     else if (e.key === "ArrowLeft" || e.key === "h" || e.key === "H") { e.preventDefault(); activate(cur - 1); }
   });
+  const btnCopy = document.getElementById("btnCopy");
+  const toast = document.getElementById("copyToast");
+  const shareText = atob("QWdlbnREaWZmIMK3IGZsYWt5LXRlc3QvYSB2cyBmbGFreS10ZXN0L2IKZHJpZnQgNDMvMTAwIMK3IDMgZGl2ZXJnZW5jZXMgwrcgZmlyc3Qg4omgICMzClRoZXkgZm9yayBhdCBzdGVwICMzOiBLaW5kIHRlc3RfZmFpbCDiiaAgc2VhcmNoLgrigKIgIzMg4oCUIEtpbmQgdGVzdF9mYWlsIOKJoCBzZWFyY2gK4oCiICM0IOKAlCBPbmx5IEI6IGVkaXQgdGVzdHMvY2hlY2tvdXQudGVzdC50cwrigKIgIzYg4oCUIE9ubHkgQTogdG9kbw==");
+  if (btnCopy) btnCopy.onclick = async () => {
+    try {
+      await navigator.clipboard.writeText(shareText);
+    } catch {
+      const ta = document.createElement("textarea");
+      ta.value = shareText; document.body.appendChild(ta); ta.select();
+      document.execCommand("copy"); ta.remove();
+    }
+    if (toast) { toast.classList.add("show"); setTimeout(() => toast.classList.remove("show"), 1200); }
+  };
   activate(cur);
 })();
 </script>
